@@ -1,0 +1,59 @@
+import { describe, it, expect, vi } from "vitest";
+import { screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { http, HttpResponse } from "msw";
+import { renderWithProviders } from "@/test/renderWithProviders";
+import { server } from "@/test/msw/server";
+import { mockBin } from "@/test/msw/handlers";
+import BinEdit from "./BinEdit";
+
+vi.mock("react-router", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-router")>();
+  return { ...actual, useParams: () => ({ id: "bin-1" }) };
+});
+
+describe("BinEdit", () => {
+  it("pre-populates name, location, description from fetched bin data", async () => {
+    renderWithProviders(<BinEdit />);
+    await waitFor(() => {
+      expect(screen.getByLabelText(/name/i)).toHaveValue(mockBin.name);
+      expect(screen.getByLabelText(/location/i)).toHaveValue(mockBin.location);
+      expect(screen.getByLabelText(/description/i)).toHaveValue(mockBin.description ?? "");
+    });
+  });
+
+  it("shows error message when update fails", async () => {
+    server.use(
+      http.put("/api/bins/:id", () =>
+        HttpResponse.json({ error: "Update failed" }, { status: 400 })
+      )
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<BinEdit />);
+
+    await waitFor(() => screen.getByLabelText(/name/i));
+    await user.click(screen.getByRole("button", { name: /save changes/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("alert")).toBeInTheDocument();
+    });
+  });
+
+  it("submit button is disabled while mutation is in-flight", async () => {
+    server.use(
+      http.put("/api/bins/:id", async () => {
+        await new Promise((r) => setTimeout(r, 200));
+        return HttpResponse.json(mockBin);
+      })
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<BinEdit />);
+
+    await waitFor(() => screen.getByLabelText(/name/i));
+    await user.click(screen.getByRole("button", { name: /save changes/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /saving/i })).toBeDisabled();
+    });
+  });
+});

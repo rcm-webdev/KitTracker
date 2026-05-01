@@ -27,16 +27,25 @@ Environment: copy `.env.example` to `.env` in the server package and fill in val
 
 ## Testing
 
-All tests are Playwright E2E in the `e2e/` package. No Jest, Vitest, or unit test mocking anywhere.
+Two testing layers:
+- **Vitest component tests** (`client/`) — UI states, form validation, loading/error/empty states. Fast (~3s), no real server needed.
+- **Playwright E2E tests** (`e2e/`) — full user flows through a real browser and server.
 
-**Run the full suite after any change to server routes, middleware, auth logic, or database schema. Do not claim a feature is complete without passing tests.**
+**Run both suites before committing. Do not claim a feature is complete without passing tests.**
 
 ```bash
-npm run test:e2e              # Full Playwright suite (required before committing)
-npm run test:ui --workspace=e2e  # Interactive Playwright UI
+# Component tests
+npm run test --workspace=client
+
+# E2E tests (auto-starts both servers)
+npm run test:e2e
+
+# Interactive UIs
+npm run test:ui --workspace=client
+npm run test:ui --workspace=e2e
 ```
 
-For infrastructure details (file structure, execution order, environment setup), use the `playwright-e2e-runner` agent — it has the full picture.
+For running and interpreting tests, use the `test-runner` agent — it knows both layers, commands, and how to diagnose failures.
 
 ## Collaboration Style
 
@@ -58,7 +67,7 @@ This is an npm workspaces monorepo with four packages: `client`, `server`, `shar
 
 - **`shared/`** — Pure TypeScript types (`types.ts`). No runtime code. Both client and server import from it via the `@strawhats/shared` path alias.
 - **`server/`** — Express API on port 3001. Uses Better Auth for auth, Prisma 7 for database access (PostgreSQL).
-- **`client/`** — React 18 + Vite + React Router v7 SPA on port 5173. In dev, `/api` requests are proxied to the server via Vite's proxy config.
+- **`client/`** — React 19 + Vite + React Router v7 SPA on port 5173. In dev, `/api` requests are proxied to the server via Vite's proxy config.
 - **`e2e/`** — Playwright tests that start both servers automatically (health-checks `http://localhost:3001/api/health` before running).
 
 ### Auth
