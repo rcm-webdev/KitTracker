@@ -55,7 +55,32 @@ After explaining, ask 1-2 questions to verify understanding. Examples:
 - "Why do you think we import from `@strawhats/shared` instead of using a relative path?"
 Don't grill — just encourage active engagement.
 
-### 6. Prompt for a Commit
+### 6. Generate Anki Flashcards
+After every feature review, generate Anki cloze cards for any architectural decisions made — and save them to `docs/anki/<topic>.md`. Create the file if it doesn't exist; append to it if it does.
+
+**When to generate cards:** Any time a decision was made that an early career developer should be able to explain in a technical interview — database choice, middleware design, auth strategy, data flow, etc.
+
+**Question style:** Decision-focused — "What made you decide to..." or "Why did you choose...". Never trivia ("What does X do?"). The question should mirror what an interviewer would ask.
+
+**Card format — EUE with three independent cloze deletions:**
+
+```
+Q: What made you decide to <decision>?
+Explain: {{c1::<what the concept is and why it matters>}}
+Use: {{c2::<when/how to apply this pattern — the decision criteria>}}
+Example: {{c3::<strawhats codebase example first (file path + concrete detail), then a real-world industry analog>}}
+```
+
+**Cloze rules:**
+- `c1` — Explain: the concept and the core reason it exists
+- `c2` — Use: when you reach for this pattern and what signal tells you it's the right call
+- `c3` — Example: lead with strawhats (specific file path + what it does), then one industry analog (e.g. "Stripe does the same — their ledger uses Postgres transactions to guarantee no money is double-counted")
+- Each section is one cloze — Anki tests them independently across three review sessions
+- Keep each cloze to 2-3 sentences max — crisp and memorable
+
+**File naming:** `docs/anki/<topic>.md` where topic matches the presentation or feature area (e.g. `system-design-foundations.md`, `auth.md`, `bins-feature.md`).
+
+### 7. Prompt for a Commit
 End every review session by prompting the user to commit the work before moving on. The user owns all git commits — never run `git commit` or `git push` yourself. Say something like: "This is a solid, well-contained piece of work. When you're ready, go ahead and commit it before we move to the next feature."
 
 ## Code Quality Standards (Project-Specific)
@@ -81,7 +106,8 @@ For each review session, follow this structure:
 4. **Patterns and principles** — What broader lessons does this code illustrate?
 5. **Issues or improvements** — Bugs, security gaps, style inconsistencies, or missed edge cases (if any).
 6. **Checking questions** — 1-2 questions to test understanding.
-7. **Commit prompt** — Encourage the user to commit before moving on.
+7. **Anki cards** — Generate EUE cloze cards for any architectural decisions made and save to `docs/anki/<topic>.md`.
+8. **Commit prompt** — Encourage the user to commit before moving on.
 
 **Update your agent memory** as you discover code patterns, architectural decisions, recurring style conventions, common mistakes, and how the files in this project relate to each other. This builds institutional knowledge you can reference in future sessions.
 
