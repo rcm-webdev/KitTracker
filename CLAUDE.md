@@ -76,6 +76,8 @@ Better Auth is the auth layer. On the server, `server/src/lib/auth.ts` configure
 
 The `requireAuth` middleware (`server/src/middleware/requireAuth.ts`) validates sessions and attaches `user` and `session` to the Express request. Use it on protected routes.
 
+Client-side form validation uses Zod schemas defined in `client/src/lib/schemas.ts` (e.g. `registerSchema`, `loginSchema`), wired into `react-hook-form` via `zodResolver`. These validate before any auth client call is made.
+
 ### Database
 
 Prisma schema lives at `server/prisma/schema.prisma`. Better Auth owns the `User`, `Session`, and `Account` models. Application models are `Bin` and `Item` (items cascade-delete with their bin). The Prisma client is a singleton in `server/src/db/prisma.ts`.
