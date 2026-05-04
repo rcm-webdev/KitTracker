@@ -76,7 +76,7 @@ Better Auth is the auth layer. On the server, `server/src/lib/auth.ts` configure
 
 The `requireAuth` middleware (`server/src/middleware/requireAuth.ts`) validates sessions and attaches `user` and `session` to the Express request. Use it on protected routes.
 
-Client-side form validation uses Zod schemas defined in `client/src/lib/schemas.ts` (e.g. `registerSchema`, `loginSchema`), wired into `react-hook-form` via `zodResolver`. These validate before any auth client call is made.
+Client-side form validation uses Zod schemas defined in `client/src/lib/schemas.ts` (e.g. `registerSchema`, `loginSchema`), wired into `react-hook-form` via `zodResolver`. These validate before any auth client call is made. All auth forms (register, login) must use `react-hook-form` + `zodResolver` with a schema from `schemas.ts` — do not use uncontrolled forms or manual validation for these flows.
 
 ### Database
 
