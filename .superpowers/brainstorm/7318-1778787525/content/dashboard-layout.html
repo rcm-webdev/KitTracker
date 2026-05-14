@@ -1,0 +1,123 @@
+<h2>Dashboard layout — how should it be organized?</h2>
+<p class="subtitle">The dashboard shows bins with filter by location and a search bar. Pick the structure that feels clearest.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="header-toolbar" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f0f0f;padding:12px;font-family:monospace;font-size:10px;">
+      <div style="background:#1a1a1a;border-radius:6px;padding:10px;">
+        <!-- Page header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <span style="color:#e5e5e5;font-weight:600;">My Bins</span>
+          <div style="background:#333;color:#e5e5e5;padding:3px 8px;border-radius:4px;font-size:9px;">+ New Bin</div>
+        </div>
+        <!-- Toolbar row -->
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <div style="background:#222;border-radius:4px;padding:4px 8px;color:#888;flex:1;">Search items...</div>
+          <div style="background:#222;border-radius:4px;padding:4px 8px;color:#888;">Location</div>
+        </div>
+        <!-- Grid -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;">
+          <div style="background:#222;height:48px;border-radius:4px;padding:5px;">
+            <div style="color:#ccc;font-size:9px;font-weight:600;">Garage</div>
+            <div style="color:#666;font-size:8px;margin-top:2px;">3 items</div>
+          </div>
+          <div style="background:#222;height:48px;border-radius:4px;padding:5px;">
+            <div style="color:#ccc;font-size:9px;font-weight:600;">Kitchen</div>
+            <div style="color:#666;font-size:8px;margin-top:2px;">7 items</div>
+          </div>
+          <div style="background:#222;height:48px;border-radius:4px;padding:5px;">
+            <div style="color:#ccc;font-size:9px;font-weight:600;">Office</div>
+            <div style="color:#666;font-size:8px;margin-top:2px;">1 item</div>
+          </div>
+          <div style="background:#222;height:48px;border-radius:4px;"></div>
+          <div style="background:#222;height:48px;border-radius:4px;"></div>
+          <div style="background:#222;height:48px;border-radius:4px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Page Header + Toolbar</h3>
+      <p>Title and "New Bin" button on top. Search and filter in a single toolbar row below. Bin grid fills the rest. Compact and scannable.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="split-panel" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f0f0f;padding:12px;font-family:monospace;font-size:10px;">
+      <div style="background:#1a1a1a;border-radius:6px;padding:10px;display:flex;gap:8px;">
+        <!-- Left filter panel -->
+        <div style="width:55px;flex-shrink:0;">
+          <div style="color:#888;font-size:8px;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Location</div>
+          <div style="color:#e5e5e5;font-size:8px;margin-bottom:4px;background:#333;padding:2px 4px;border-radius:3px;">All</div>
+          <div style="color:#888;font-size:8px;margin-bottom:4px;">Garage</div>
+          <div style="color:#888;font-size:8px;margin-bottom:4px;">Kitchen</div>
+          <div style="color:#888;font-size:8px;margin-bottom:4px;">Office</div>
+        </div>
+        <!-- Right content -->
+        <div style="flex:1;">
+          <div style="display:flex;gap:5px;margin-bottom:8px;">
+            <div style="background:#222;border-radius:4px;padding:3px 6px;color:#888;flex:1;font-size:9px;">Search...</div>
+            <div style="background:#333;color:#e5e5e5;padding:3px 6px;border-radius:4px;font-size:9px;">+ New</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+            <div style="background:#222;height:40px;border-radius:4px;padding:5px;">
+              <div style="color:#ccc;font-size:9px;font-weight:600;">Garage</div>
+              <div style="color:#666;font-size:8px;">3 items</div>
+            </div>
+            <div style="background:#222;height:40px;border-radius:4px;padding:5px;">
+              <div style="color:#ccc;font-size:9px;font-weight:600;">Kitchen</div>
+              <div style="color:#666;font-size:8px;">7 items</div>
+            </div>
+            <div style="background:#222;height:40px;border-radius:4px;"></div>
+            <div style="background:#222;height:40px;border-radius:4px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Filter Panel + Content</h3>
+      <p>Persistent location filter on the left, search + grid on the right. Mirrors a file explorer feel. More spatial, great when there are many locations.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="stacked" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f0f0f;padding:12px;font-family:monospace;font-size:10px;">
+      <div style="background:#1a1a1a;border-radius:6px;padding:10px;">
+        <!-- Header with CTA -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="color:#e5e5e5;font-weight:600;">My Bins</span>
+          <div style="background:#333;color:#e5e5e5;padding:3px 8px;border-radius:4px;font-size:9px;">+ New Bin</div>
+        </div>
+        <!-- Search -->
+        <div style="background:#222;border-radius:4px;padding:5px 8px;color:#666;margin-bottom:8px;font-size:9px;">Search items across all bins...</div>
+        <!-- Location chips -->
+        <div style="display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap;">
+          <div style="background:#333;color:#e5e5e5;padding:2px 7px;border-radius:12px;font-size:8px;">All</div>
+          <div style="background:#222;color:#888;padding:2px 7px;border-radius:12px;font-size:8px;">Garage</div>
+          <div style="background:#222;color:#888;padding:2px 7px;border-radius:12px;font-size:8px;">Kitchen</div>
+          <div style="background:#222;color:#888;padding:2px 7px;border-radius:12px;font-size:8px;">Office</div>
+        </div>
+        <!-- Grid -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;">
+          <div style="background:#222;height:40px;border-radius:4px;padding:4px;">
+            <div style="color:#ccc;font-size:9px;font-weight:600;">Garage</div>
+            <div style="color:#666;font-size:8px;">3 items</div>
+          </div>
+          <div style="background:#222;height:40px;border-radius:4px;padding:4px;">
+            <div style="color:#ccc;font-size:9px;font-weight:600;">Kitchen</div>
+            <div style="color:#666;font-size:8px;">7 items</div>
+          </div>
+          <div style="background:#222;height:40px;border-radius:4px;padding:4px;">
+            <div style="color:#ccc;font-size:9px;font-weight:600;">Office</div>
+            <div style="color:#666;font-size:8px;">1 item</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Stacked with Filter Chips</h3>
+      <p>Header, full-width search bar, then location as pill chips above the grid. Touch-friendly, clean visual flow top to bottom. My recommendation for this app.</p>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,69 @@
+<h2>Section 3 — Form Consistency</h2>
+<p class="subtitle">All forms adopt the same stack: shadcn Form + react-hook-form + Zod</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">Before — BinNew / BinEdit (raw HTML)</div>
+    <div class="mockup-body" style="font-family:monospace;font-size:11px;background:#0f0f0f;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div>
+          <div style="color:#888;font-size:10px;margin-bottom:4px;">Name</div>
+          <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:4px;padding:7px 10px;color:#666;font-size:11px;">Bin name...</div>
+        </div>
+        <div>
+          <div style="color:#888;font-size:10px;margin-bottom:4px;">Location</div>
+          <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:4px;padding:7px 10px;color:#666;font-size:11px;">Location...</div>
+        </div>
+        <div>
+          <div style="color:#888;font-size:10px;margin-bottom:4px;">Description</div>
+          <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:4px;padding:7px 10px;color:#666;font-size:11px;height:40px;"></div>
+        </div>
+        <!-- No error states shown -->
+        <div style="background:#333;color:#ccc;padding:7px;border-radius:4px;text-align:center;font-size:11px;">Save</div>
+        <div style="color:#444;font-size:9px;font-style:italic;">No validation feedback, no error states, mixed styling</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">After — consistent shadcn Form</div>
+    <div class="mockup-body" style="font-family:monospace;font-size:11px;background:#0f0f0f;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div>
+          <div style="color:#ccc;font-size:10px;margin-bottom:4px;">Name <span style="color:#555;">*</span></div>
+          <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:5px;padding:7px 10px;color:#e5e5e5;font-size:11px;">Garage Tools</div>
+        </div>
+        <div>
+          <div style="color:#ccc;font-size:10px;margin-bottom:4px;">Location <span style="color:#555;">*</span></div>
+          <!-- Error state -->
+          <div style="background:#1a1a1a;border:1px solid #7f1d1d;border-radius:5px;padding:7px 10px;color:#e5e5e5;font-size:11px;"></div>
+          <div style="color:#ef4444;font-size:9px;margin-top:3px;">Location is required</div>
+        </div>
+        <div>
+          <div style="color:#ccc;font-size:10px;margin-bottom:4px;">Description <span style="color:#555;">optional</span></div>
+          <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:5px;padding:7px 10px;color:#888;font-size:11px;height:40px;"></div>
+        </div>
+        <!-- Loading state button -->
+        <div style="display:flex;gap:6px;">
+          <div style="background:#e5e5e5;color:#0a0a0a;padding:7px 16px;border-radius:5px;font-size:11px;font-weight:600;">Save Bin</div>
+          <div style="background:transparent;border:1px solid #2a2a2a;color:#888;padding:7px 12px;border-radius:5px;font-size:11px;">Cancel</div>
+        </div>
+        <div style="color:#555;font-size:9px;font-style:italic;">Zod validation, inline errors, consistent shadcn components</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:20px;">
+  <h3>What changes across the codebase</h3>
+  <ul style="color:var(--text-secondary,#888);font-size:13px;line-height:1.8;padding-left:20px;">
+    <li><strong style="color:#ccc;">BinNew, BinEdit</strong> — migrate raw <code>&lt;input&gt;</code> / <code>&lt;textarea&gt;</code> to <code>FormField</code> + <code>FormItem</code> + <code>FormMessage</code> from shadcn, backed by Zod schemas in <code>schemas.ts</code></li>
+    <li><strong style="color:#ccc;">BinDetail (add item)</strong> — inline item form gets the same treatment; name required, description optional</li>
+    <li><strong style="color:#ccc;">Cancel button</strong> added to BinNew and BinEdit — navigates back, no unsaved changes lost silently</li>
+    <li><strong style="color:#ccc;">Submit button state</strong> — disabled + shows spinner while mutation is in flight (react-hook-form <code>isSubmitting</code>)</li>
+    <li><strong style="color:#ccc;">LoginForm / RegisterForm</strong> — already correct, no changes needed</li>
+    <li><strong style="color:#ccc;">New Zod schemas</strong> — <code>binSchema</code> and <code>itemSchema</code> added to <code>schemas.ts</code></li>
+  </ul>
+</div>
+
+<p style="color:#888;font-size:12px;margin-top:16px;">Does this cover what you had in mind for form consistency? Approve and I'll write up the full spec.</p>

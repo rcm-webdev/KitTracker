@@ -1,0 +1,82 @@
+<h2>Section 1 — App Shell & Sidebar</h2>
+<p class="subtitle">The persistent layout wrapper for all protected routes</p>
+
+<div class="mockup">
+  <div class="mockup-header">AppLayout — full view (desktop)</div>
+  <div class="mockup-body" style="padding:0;overflow:hidden;border-radius:0 0 6px 6px;">
+    <div style="display:flex;height:320px;font-family:monospace;font-size:11px;background:#0a0a0a;">
+
+      <!-- Sidebar -->
+      <div style="width:200px;flex-shrink:0;background:#111;border-right:1px solid #222;display:flex;flex-direction:column;padding:16px 0;">
+        <!-- Logo -->
+        <div style="padding:0 16px 20px;border-bottom:1px solid #1e1e1e;margin-bottom:16px;">
+          <span style="color:#e5e5e5;font-weight:700;font-size:13px;letter-spacing:0.5px;">STRAWHATS</span>
+        </div>
+
+        <!-- Nav items -->
+        <div style="flex:1;padding:0 8px;display:flex;flex-direction:column;gap:2px;">
+          <!-- Active -->
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:#1e1e1e;border-radius:6px;color:#e5e5e5;">
+            <div style="width:14px;height:14px;background:#555;border-radius:2px;flex-shrink:0;"></div>
+            <span style="font-size:12px;">Dashboard</span>
+          </div>
+          <!-- Inactive -->
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;color:#666;">
+            <div style="width:14px;height:14px;background:#333;border-radius:2px;flex-shrink:0;"></div>
+            <span style="font-size:12px;">Search</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;color:#666;">
+            <div style="width:14px;height:14px;background:#333;border-radius:2px;flex-shrink:0;"></div>
+            <span style="font-size:12px;">Scan QR</span>
+          </div>
+          <!-- Admin (role-gated) -->
+          <div style="margin-top:8px;padding:0 10px;margin-bottom:4px;">
+            <span style="color:#444;font-size:9px;text-transform:uppercase;letter-spacing:1px;">Admin</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;color:#666;">
+            <div style="width:14px;height:14px;background:#333;border-radius:2px;flex-shrink:0;"></div>
+            <span style="font-size:12px;">Users</span>
+          </div>
+        </div>
+
+        <!-- User + Sign out at bottom -->
+        <div style="border-top:1px solid #1e1e1e;padding:12px 16px;margin-top:auto;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="color:#ccc;font-size:11px;">aokiji</div>
+              <div style="color:#555;font-size:9px;">admin</div>
+            </div>
+            <div style="width:14px;height:14px;background:#333;border-radius:2px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main content area -->
+      <div style="flex:1;padding:24px;background:#0f0f0f;overflow:auto;">
+        <div style="color:#666;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">Page content renders here</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+          <div style="background:#1a1a1a;height:60px;border-radius:6px;"></div>
+          <div style="background:#1a1a1a;height:60px;border-radius:6px;"></div>
+          <div style="background:#1a1a1a;height:60px;border-radius:6px;"></div>
+          <div style="background:#1a1a1a;height:60px;border-radius:6px;"></div>
+          <div style="background:#1a1a1a;height:60px;border-radius:6px;"></div>
+          <div style="background:#1a1a1a;height:60px;border-radius:6px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:20px;">
+  <h3>Sidebar details</h3>
+  <ul style="color:var(--text-secondary,#888);font-size:13px;line-height:1.8;padding-left:20px;">
+    <li>Built with shadcn <strong style="color:#ccc;">Sidebar</strong> component (via MCP) — handles collapse, keyboard nav, and accessibility out of the box</li>
+    <li>Lucide icons for all nav items — <code>LayoutDashboard</code>, <code>Search</code>, <code>ScanLine</code>, <code>Users</code>, <code>LogOut</code></li>
+    <li>Active route highlighted via React Router's <code>useLocation</code></li>
+    <li><strong style="color:#ccc;">Admin</strong> section (Users link) only visible to admin role — same <code>requireAdmin</code> logic already in <code>ProtectedRoute</code></li>
+    <li>User name + role shown at bottom with a sign-out icon button</li>
+    <li>Wraps all protected routes in <code>App.tsx</code> — public routes (login, register) are unaffected</li>
+  </ul>
+</div>
+
+<p style="color:#888;font-size:12px;margin-top:16px;">Does this look right? Let me know and I'll show the dashboard layout next.</p>
