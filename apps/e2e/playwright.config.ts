@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 
-// Read all test env vars from server/.env.test so the test server is fully
-// isolated — nothing leaks in from the developer's real server/.env.
+// Read all test env vars from apps/server/.env.test so the test server is fully
+// isolated — nothing leaks in from the developer's real apps/server/.env.
 const testEnv = dotenv.parse(
   fs.readFileSync(path.resolve(__dirname, "../server/.env.test"))
 );
@@ -46,15 +46,15 @@ export default defineConfig({
     {
       // Start a fresh server using only .env.test vars — never touches server/.env.
       // If port 3001 is in use, stop your dev server before running tests.
-      command: "npm run dev --workspace=server",
-      cwd: "../",
+      command: "npm run dev --workspace=@strawhats/server",
+      cwd: "../../",
       url: "http://localhost:3001/api/health",
       reuseExistingServer: false,
       env: testEnv,
     },
     {
-      command: "npm run dev --workspace=client",
-      cwd: "../",
+      command: "npm run dev --workspace=@strawhats/client",
+      cwd: "../../",
       url: "http://localhost:5173",
       reuseExistingServer: !process.env.CI,
     },

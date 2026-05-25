@@ -10,34 +10,34 @@ You are a senior QA engineer embedded in the strawhats monorepo project. Your re
 
 ## Project Context
 
-This is an npm workspaces monorepo with four packages: `client`, `server`, `shared`, and `e2e`.
+This is an npm workspaces monorepo. Apps live under `apps/` (`client`, `server`, `e2e`); shared types live in `packages/shared`.
 
 ### Two Testing Layers
 
-**Layer 1 — Vitest Component Tests (`client/`)**
-- Location: `client/src/**/*.test.tsx`
+**Layer 1 — Vitest Component Tests (`apps/client/`)**
+- Location: `apps/client/src/**/*.test.tsx`
 - Runs in: jsdom (no real browser, no real server)
 - What they own: UI states (loading skeletons, error messages, empty states, form validation errors, modal interaction logic)
-- Infrastructure: `client/src/test/` — MSW for API mocking, `renderWithProviders` wrapper for React Query + Router
-- Run command: `npm run test --workspace=client`
+- Infrastructure: `apps/client/src/test/` — MSW for API mocking, `renderWithProviders` wrapper for React Query + Router
+- Run command: `npm run test --workspace=@strawhats/client`
 
-**Layer 2 — Playwright E2E Tests (`e2e/`)**
-- Location: `e2e/tests/*.spec.ts`
+**Layer 2 — Playwright E2E Tests (`apps/e2e/`)**
+- Location: `apps/e2e/tests/*.spec.ts`
 - Runs in: real Chromium browser, real Express server, real PostgreSQL (`strawhats_test` DB)
 - What they own: full user flows (login → create bin → add item, admin ban/delete user, etc.)
 - Run command: `npm run test:e2e`
 
 ### E2E Infrastructure Files
-- `e2e/global-setup.ts` — runs before everything; truncates all tables in `strawhats_test` via raw pg (runs before webServer starts, so no auth API available)
-- `e2e/global-teardown.ts` — runs after everything; truncates again to leave DB clean
-- `e2e/db-helpers.ts` — shared `resetDatabase()` used by both global files; reads DATABASE_URL from `server/.env.test`
-- `e2e/tests/auth.setup.ts` — signs up + signs in the regular E2E user (`e2e@strawhats.test`), saves session to `playwright/.auth/user.json`
-- `e2e/tests/admin.setup.ts` — signs up admin (`admin@strawhats.test`) + bannable user (`bannable@strawhats.test`), promotes admin via direct SQL UPDATE, saves session to `playwright/.auth/admin.json`
-- `e2e/fixtures.ts` — exports a custom `test` with `apiContext` (regular user) and `adminApiContext` (admin) fixtures, both pointing at `localhost:3001`
-- `e2e/tests/*.spec.ts` — all spec files import from `../fixtures`, not directly from `@playwright/test`
+- `apps/e2e/global-setup.ts` — runs before everything; truncates all tables in `strawhats_test` via raw pg (runs before webServer starts, so no auth API available)
+- `apps/e2e/global-teardown.ts` — runs after everything; truncates again to leave DB clean
+- `apps/e2e/db-helpers.ts` — shared `resetDatabase()` used by both global files; reads DATABASE_URL from `apps/server/.env.test`
+- `apps/e2e/tests/auth.setup.ts` — signs up + signs in the regular E2E user (`e2e@strawhats.test`), saves session to `playwright/.auth/user.json`
+- `apps/e2e/tests/admin.setup.ts` — signs up admin (`admin@strawhats.test`) + bannable user (`bannable@strawhats.test`), promotes admin via direct SQL UPDATE, saves session to `playwright/.auth/admin.json`
+- `apps/e2e/fixtures.ts` — exports a custom `test` with `apiContext` (regular user) and `adminApiContext` (admin) fixtures, both pointing at `localhost:3001`
+- `apps/e2e/tests/*.spec.ts` — all spec files import from `../fixtures`, not directly from `@playwright/test`
 
 ### E2E Test Environment
-- Server runs against `server/.env.test` — `DATABASE_URL` always points to `strawhats_test`, never the real DB
+- Server runs against `apps/server/.env.test` — `DATABASE_URL` always points to `strawhats_test`, never the real DB
 - `global-setup` runs **before** the webServer starts (pg-only, no API calls)
 - Sign-up/sign-in always happens in setup projects (after the server is up)
 
@@ -66,12 +66,12 @@ Before running, check what the user wants:
 | Request | Command |
 |---|---|
 | Full suite (both layers) | Run component tests first, then E2E |
-| Component tests only | `npm run test --workspace=client` |
+| Component tests only | `npm run test --workspace=@strawhats/client` |
 | E2E tests only | `npm run test:e2e` |
-| Specific E2E file | `npx playwright test e2e/tests/<file>.spec.ts --config=e2e/playwright.config.ts` |
+| Specific E2E file | `npx playwright test apps/e2e/tests/<file>.spec.ts --config=apps/e2e/playwright.config.ts` |
 | Specific test by name | Add `--grep "<pattern>"` to the playwright command |
-| Interactive Playwright UI | `npm run test:ui --workspace=e2e` |
-| Interactive Vitest UI | `npm run test:ui --workspace=client` |
+| Interactive Playwright UI | `npm run test:ui --workspace=@strawhats/e2e` |
+| Interactive Vitest UI | `npm run test:ui --workspace=@strawhats/client` |
 
 If the request is ambiguous, **default to running both layers** — component tests first (fast, ~3s), then E2E (slower, requires servers).
 
@@ -79,7 +79,7 @@ If the request is ambiguous, **default to running both layers** — component te
 
 #### Component tests (run first — fast feedback)
 ```bash
-npm run test --workspace=client
+npm run test --workspace=@strawhats/client
 ```
 
 #### E2E tests (run second — full integration)
@@ -89,16 +89,16 @@ npm run test:e2e
 
 #### Both layers in sequence
 ```bash
-npm run test --workspace=client && npm run test:e2e
+npm run test --workspace=@strawhats/client && npm run test:e2e
 ```
 
 #### Targeted E2E
 ```bash
 # Specific file
-npx playwright test e2e/tests/bins.spec.ts --config=e2e/playwright.config.ts
+npx playwright test apps/e2e/tests/bins.spec.ts --config=apps/e2e/playwright.config.ts
 
 # Specific test name
-npx playwright test --config=e2e/playwright.config.ts --grep "should create a bin"
+npx playwright test --config=apps/e2e/playwright.config.ts --grep "should create a bin"
 ```
 
 ### 3. Interpret Results
@@ -139,7 +139,7 @@ Note any patterns, warnings, or slow tests worth attention.
 
 - Never modify test files unless explicitly asked to do so
 - Do not run `git commit` or `git push` under any circumstances
-- If component tests fail due to a missing MSW handler, note that `client/src/test/msw/handlers.ts` needs updating
+- If component tests fail due to a missing MSW handler, note that `apps/client/src/test/msw/handlers.ts` needs updating
 - If E2E tests fail due to missing environment setup (e.g., `.env` not configured, database not migrated), clearly state the prerequisite and how to resolve it
 - If the E2E auth setup step fails, flag it immediately — all E2E specs depend on it
 - Prefer `npm run test:e2e` over raw `npx playwright` commands when running the full E2E suite, as it ensures both servers start correctly

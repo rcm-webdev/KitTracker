@@ -7,7 +7,7 @@ function getTestDatabaseUrl(): string {
   const parsed = dotenv.parse(
     fs.readFileSync(path.resolve(__dirname, "../server/.env.test"))
   );
-  if (!parsed.DATABASE_URL) throw new Error("DATABASE_URL missing from server/.env.test");
+  if (!parsed.DATABASE_URL) throw new Error("DATABASE_URL missing from apps/server/.env.test");
   return parsed.DATABASE_URL;
 }
 

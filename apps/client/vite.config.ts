@@ -8,7 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "@strawhats/shared": path.resolve(__dirname, "../shared/types.ts"),
+      "@strawhats/shared": path.resolve(__dirname, "../../packages/shared/types.ts"),
     },
     dedupe: ["react", "react-dom"],
   },
