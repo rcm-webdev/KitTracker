@@ -5,44 +5,45 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 ****
 ```bash
-# Development (run concurrently in separate terminals)
-npm run dev:server          # Express server on port 3001 (tsx watch)
-npm run dev:client          # Vite client on port 5173
+# Development (client + server in one terminal)
+npm run dev                 # Express :3001 + Vite :5173 via concurrently
+npm run dev:server          # Express server only
+npm run dev:client          # Vite client only
 
 # Testing
 npm run test:e2e            # Playwright E2E tests (auto-starts both servers)
-npm run test:ui --workspace=e2e   # Interactive Playwright UI
+npm run test:ui --workspace=@strawhats/e2e   # Interactive Playwright UI
 
 # Build
-npm run build --workspace=server  # tsc → dist/
-npm run build --workspace=client  # tsc + vite build → dist/
+npm run build --workspace=@strawhats/server  # tsc → dist/
+npm run build --workspace=@strawhats/client  # tsc + vite build → dist/
 
-# Database (run from server/ or with --prefix server/)
+# Database (run from apps/server/ or with --prefix)
 npx prisma migrate dev      # Create and apply migration
 npx prisma generate         # Regenerate Prisma client after schema changes
 npx @better-auth/cli generate  # Regenerate Better Auth schema tables
 ```
 
-Environment: copy `.env.example` to `.env` in the server package and fill in values before running.
+Environment: copy `.env.example` to `.env` in `apps/server` and fill in values before running.
 
 ## Testing
 
 Two testing layers:
-- **Vitest component tests** (`client/`) — UI states, form validation, loading/error/empty states. Fast (~3s), no real server needed.
-- **Playwright E2E tests** (`e2e/`) — full user flows through a real browser and server.
+- **Vitest component tests** (`apps/client/`) — UI states, form validation, loading/error/empty states. Fast (~3s), no real server needed.
+- **Playwright E2E tests** (`apps/e2e/`) — full user flows through a real browser and server.
 
 **Run both suites before committing. Do not claim a feature is complete without passing tests.**
 
 ```bash
 # Component tests
-npm run test --workspace=client
+npm run test --workspace=@strawhats/client
 
 # E2E tests (auto-starts both servers)
 npm run test:e2e
 
 # Interactive UIs
-npm run test:ui --workspace=client
-npm run test:ui --workspace=e2e
+npm run test:ui --workspace=@strawhats/client
+npm run test:ui --workspace=@strawhats/e2e
 ```
 
 For running and interpreting tests, use the `test-runner` agent — it knows both layers, commands, and how to diagnose failures.
@@ -61,26 +62,26 @@ For post-feature walkthroughs, use the `pair-programming-mentor` agent — it ha
 
 ## Architecture
 
-This is an npm workspaces monorepo with four packages: `client`, `server`, `shared`, and `e2e`.
+This is an npm workspaces monorepo. Deployable apps live under `apps/`; shared libraries live under `packages/`.
 
 ### Package Roles
 
-- **`shared/`** — Pure TypeScript types (`types.ts`). No runtime code. Both client and server import from it via the `@strawhats/shared` path alias.
-- **`server/`** — Express API on port 3001. Uses Better Auth for auth, Prisma 7 for database access (PostgreSQL).
-- **`client/`** — React 19 + Vite + React Router v7 SPA on port 5173. In dev, `/api` requests are proxied to the server via Vite's proxy config.
-- **`e2e/`** — Playwright tests that start both servers automatically (health-checks `http://localhost:3001/api/health` before running).
+- **`packages/shared/`** — Pure TypeScript types (`types.ts`). No runtime code. Both client and server import from it via the `@strawhats/shared` path alias.
+- **`apps/server/`** — Express API on port 3001. Uses Better Auth for auth, Prisma 7 for database access (PostgreSQL).
+- **`apps/client/`** — React 19 + Vite + React Router v7 SPA on port 5173. In dev, `/api` requests are proxied to the server via Vite's proxy config.
+- **`apps/e2e/`** — Playwright tests that start both servers automatically (health-checks `http://localhost:3001/api/health` before running).
 
 ### Auth
 
-Better Auth is the auth layer. On the server, `server/src/lib/auth.ts` configures it with a Prisma adapter and email/password + admin plugin. The auth handler is mounted at `/api/auth/*` in Express. On the client, `client/src/lib/auth-client.ts` provides `signIn`, `signUp`, `signOut`, `useSession`, and `getSession`.
+Better Auth is the auth layer. On the server, `apps/server/src/lib/auth.ts` configures it with a Prisma adapter and email/password + admin plugin. The auth handler is mounted at `/api/auth/*` in Express. On the client, `apps/client/src/lib/auth-client.ts` provides `signIn`, `signUp`, `signOut`, `useSession`, and `getSession`.
 
-The `requireAuth` middleware (`server/src/middleware/requireAuth.ts`) validates sessions and attaches `user` and `session` to the Express request. Use it on protected routes.
+The `requireAuth` middleware (`apps/server/src/middleware/requireAuth.ts`) validates sessions and attaches `user` and `session` to the Express request. Use it on protected routes.
 
-Client-side form validation uses Zod schemas defined in `client/src/lib/schemas.ts` (e.g. `registerSchema`, `loginSchema`), wired into `react-hook-form` via `zodResolver`. These validate before any auth client call is made. All auth forms (register, login) must use `react-hook-form` + `zodResolver` with a schema from `schemas.ts` — do not use uncontrolled forms or manual validation for these flows.
+Client-side form validation uses Zod schemas defined in `apps/client/src/lib/schemas.ts` (e.g. `registerSchema`, `loginSchema`), wired into `react-hook-form` via `zodResolver`. These validate before any auth client call is made. All auth forms (register, login) must use `react-hook-form` + `zodResolver` with a schema from `schemas.ts` — do not use uncontrolled forms or manual validation for these flows.
 
 ### Database
 
-Prisma schema lives at `server/prisma/schema.prisma`. Better Auth owns the `User`, `Session`, and `Account` models. Application models are `Bin` and `Item` (items cascade-delete with their bin). The Prisma client is a singleton in `server/src/db/prisma.ts`.
+Prisma schema lives at `apps/server/prisma/schema.prisma`. Better Auth owns the `User`, `Session`, and `Account` models. Application models are `Bin` and `Item` (items cascade-delete with their bin). The Prisma client is a singleton in `apps/server/src/db/prisma.ts`.
 
 ### Key Technical Choices
 

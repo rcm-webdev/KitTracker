@@ -24,7 +24,7 @@ A home storage bin inventory app. Create bins, track items inside them, generate
 | Database | PostgreSQL via Prisma 7 + `@prisma/adapter-pg` |
 | Testing | Vitest (component), Playwright (E2E) |
 
-The project is an npm workspaces monorepo with four packages: `client`, `server`, `shared`, and `e2e`.
+The project is an npm workspaces monorepo: deployable apps live under `apps/`, shared libraries under `packages/`.
 
 ## Getting Started
 
@@ -44,7 +44,7 @@ npm install
 2. Create the server environment file:
 
 ```bash
-cp server/.env.example server/.env
+cp apps/server/.env.example apps/server/.env
 ```
 
 Fill in the values:
@@ -60,43 +60,51 @@ PORT=3001
 3. Run database migrations and generate the Prisma client:
 
 ```bash
-cd server
+cd apps/server
 npx prisma migrate dev
 npx prisma generate
 ```
 
 ### Running
 
-Start both servers in separate terminals:
+Start both apps in one terminal:
 
 ```bash
-npm run dev:server   # Express API on http://localhost:3001
-npm run dev:client   # React app on http://localhost:5173
+npm run dev   # Express API on http://localhost:3001 + React on http://localhost:5173
+```
+
+Or run them separately:
+
+```bash
+npm run dev:server   # Express API only
+npm run dev:client   # React app only
 ```
 
 ## Testing
 
 ```bash
 # Component tests (Vitest)
-npm run test --workspace=client
+npm run test --workspace=@strawhats/client
 
 # E2E tests (Playwright — auto-starts both servers)
 npm run test:e2e
 
 # Interactive UIs
-npm run test:ui --workspace=client
-npm run test:ui --workspace=e2e
+npm run test:ui --workspace=@strawhats/client
+npm run test:ui --workspace=@strawhats/e2e
 ```
 
 ## Project Structure
 
 ```
 strawhats/
-├── client/        # React + Vite SPA
-├── server/        # Express API + Prisma
-│   └── prisma/    # Schema and migrations
-├── shared/        # Shared TypeScript types
-└── e2e/           # Playwright tests
+├── apps/
+│   ├── client/    # React + Vite SPA
+│   ├── server/    # Express API + Prisma
+│   │   └── prisma/
+│   └── e2e/       # Playwright tests
+└── packages/
+    └── shared/    # Shared TypeScript types
 ```
 
 ## Database Schema

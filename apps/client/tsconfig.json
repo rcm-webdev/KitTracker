@@ -17,7 +17,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@strawhats/shared": ["../shared/types.ts"],
+      "@strawhats/shared": ["../../packages/shared/types.ts"],
       "@/*": ["./src/*"]
     }
   },
