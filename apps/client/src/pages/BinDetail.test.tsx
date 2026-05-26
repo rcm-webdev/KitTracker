@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
@@ -43,6 +43,10 @@ vi.mock("@/hooks/useMe", () => ({
 }));
 
 describe("BinDetail", () => {
+  beforeEach(() => {
+    vi.mocked(toast.success).mockClear();
+  });
+
   it("shows nothing (null) while bin is loading", () => {
     server.use(
       http.get("/api/bins/:id", async () => {

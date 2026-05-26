@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
@@ -11,6 +11,10 @@ import BinNew from "./BinNew";
 vi.mock("sonner", () => ({ toast: { success: vi.fn() } }));
 
 describe("BinNew", () => {
+  beforeEach(() => {
+    vi.mocked(toast.success).mockClear();
+  });
+
   it("shows error message when create fails", async () => {
     server.use(
       http.post("/api/bins", () =>

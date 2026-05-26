@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
@@ -16,6 +16,10 @@ vi.mock("react-router", async (importOriginal) => {
 });
 
 describe("BinEdit", () => {
+  beforeEach(() => {
+    vi.mocked(toast.success).mockClear();
+  });
+
   it("pre-populates name, location, description from fetched bin data", async () => {
     renderWithProviders(<BinEdit />);
     await waitFor(() => {
