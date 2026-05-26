@@ -33,7 +33,14 @@ export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route
+        path="/register"
+        element={
+          import.meta.env.VITE_REGISTRATION_ENABLED === "false"
+            ? <Navigate to="/login" replace />
+            : <Register />
+        }
+      />
       <Route path="/k/:id" element={<PublicKit />} />
 
       <Route

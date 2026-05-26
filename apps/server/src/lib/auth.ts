@@ -1,4 +1,5 @@
 import { betterAuth } from "better-auth";
+import { APIError, createAuthMiddleware } from "better-auth/api";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { admin } from "better-auth/plugins";
 import { prisma } from "../db/prisma";
@@ -24,6 +25,13 @@ export const auth = betterAuth({
   trustedOrigins: [
     process.env.CLIENT_URL!,
   ],
+  hooks: {
+    before: createAuthMiddleware(async (ctx) => {
+      if (ctx.path.startsWith("/sign-up") && process.env.REGISTRATION_ENABLED === "false") {
+        throw new APIError("FORBIDDEN", { message: "Registration is currently disabled." });
+      }
+    }),
+  },
 });
 
 export type Session = typeof auth.$Infer.Session;

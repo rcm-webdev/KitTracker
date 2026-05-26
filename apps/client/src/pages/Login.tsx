@@ -81,11 +81,13 @@ export default function Login() {
       footer={
         <>
           <DemoLoginCredentials />
-          <AuthFooterLink
-            text="No account?"
-            linkText="Create account"
-            to="/register"
-          />
+          {import.meta.env.VITE_REGISTRATION_ENABLED !== "false" && (
+            <AuthFooterLink
+              text="No account?"
+              linkText="Create account"
+              to="/register"
+            />
+          )}
         </>
       }
     >
