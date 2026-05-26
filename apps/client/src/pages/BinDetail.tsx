@@ -262,7 +262,7 @@ export default function BinDetail() {
           <img
             src={procedureSetupPlaceholder}
             alt="Example surgical tray layout"
-            className="aspect-[4/3] w-full object-cover"
+            className="aspect-4/3 w-full object-cover"
           />
           <p
             className="absolute inset-x-0 bottom-0 bg-foreground/85 px-3 py-2 text-center text-[10px] font-medium uppercase tracking-wide text-background"

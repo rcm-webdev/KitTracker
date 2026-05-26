@@ -74,7 +74,7 @@ export default function PublicKitView({ bin }: PublicKitViewProps) {
           <img
             src={procedureSetupPlaceholder}
             alt=""
-            className="aspect-[4/3] w-full object-cover"
+            className="aspect-4/3 w-full object-cover"
           />
           <p className="absolute inset-x-0 bottom-0 bg-foreground/85 px-2 py-1.5 text-center text-[9px] font-medium uppercase tracking-wide text-background">
             Placeholder — not an actual kit setup
