@@ -70,7 +70,7 @@ describe("PublicKit", () => {
 
     await waitFor(() => {
       expect(signIn.email).toHaveBeenCalledWith({
-        email: "tablet@strawhats.clinic",
+        email: "tablet@kittracker.clinic",
         password: "88888888",
       });
     });

@@ -14,7 +14,7 @@ import { useMe } from "@/hooks/useMe";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const SIDEBAR_COLLAPSED_KEY = "strawhats-sidebar-collapsed";
+const SIDEBAR_COLLAPSED_KEY = "kittracker-sidebar-collapsed";
 
 const navItems = [
   { to: "/dashboard", label: "Procedure kits", icon: LayoutDashboard },

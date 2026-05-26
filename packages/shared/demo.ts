@@ -2,16 +2,16 @@ import { CLINIC_PROVIDERS } from "./providers";
 
 /** Demo lead tech — can create kits for all demo surgeons. */
 export const DEMO_USER = {
-  email: "demo@kittracker.clinic",
-  password: "demo-demo-demo",
-  name: "Clinic Demo (Lead)",
+  email: "clinic-lead@kittracker.clinic",
+  password: "DemoPass123!",
+  name: "Clinic Lead",
 } as const;
 
 /** Example technician on a single surgeon team (seed optional). */
 export const DEMO_TECHNICIAN = {
-  email: "tech.dr-eye@kittracker.clinic",
-  password: "demo-demo-demo",
-  name: "Dr. Eye Team Tech",
+  email: "eye1team@kittracker.clinic",
+  password: "DemoPass123!",
+  name: "Eye 1 Team Tech",
   assignedProviders: ["Dr. Eye"] as const,
 } as const;
 

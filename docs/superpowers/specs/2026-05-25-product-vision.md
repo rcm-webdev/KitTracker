@@ -43,8 +43,8 @@ The interface should feel like clinical operations software, not a hobby project
 
 Run `npm run db:seed` from the repo root (after migrations). This creates:
 
-- **User:** `demo@strawhats.clinic` / `demo-demo-demo` (see `packages/shared/demo.ts`)
-- **Clinic tablet (QR PIN):** `tablet@strawhats.clinic` / PIN `88888888` (see `packages/shared/kiosk.ts`)
+- **User:** `clinic-lead@kittracker.clinic` / `DemoPass123!` (see `packages/shared/demo.ts`)
+- **Clinic tablet (QR PIN):** `tablet@kittracker.clinic` / PIN `88888888` (see `packages/shared/kiosk.ts`)
 - **Kits:** eight procedure kits, one per surgeon in `CLINIC_PROVIDERS` (Dr. Eye … Dr. Eye8), each tagged with that provider and stocked with sample supplies
 
 Re-running the seed keeps the same user and replaces their kits — safe for refreshing a demo environment.
