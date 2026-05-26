@@ -9,7 +9,9 @@
     "dev": "concurrently -n server,client -c blue,green \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "npm run dev --workspace=@strawhats/server",
     "dev:client": "npm run dev --workspace=@strawhats/client",
-    "test:e2e": "npm run test --workspace=@strawhats/e2e"
+    "test:e2e": "npm run test --workspace=@strawhats/e2e",
+    "db:migrate": "npm run db:migrate --workspace=@strawhats/server",
+    "db:seed": "npm run db:seed --workspace=@strawhats/server"
   },
   "devDependencies": {
     "concurrently": "^9.2.0",

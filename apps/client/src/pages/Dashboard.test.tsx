@@ -33,7 +33,7 @@ describe("Dashboard", () => {
     server.use(http.get("/api/bins", () => HttpResponse.json([])));
     renderWithProviders(<Dashboard />);
     await waitFor(() => {
-      expect(screen.getByText(/no bins yet/i)).toBeInTheDocument();
+      expect(screen.getByText(/no procedure kits yet/i)).toBeInTheDocument();
     });
   });
 

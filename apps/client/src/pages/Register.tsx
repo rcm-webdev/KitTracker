@@ -1,14 +1,20 @@
-import { Link } from "react-router"
+import AuthLayout, { AuthFooterLink } from "@/components/AuthLayout"
 import RegisterForm from "@/components/RegisterForm"
 
 export default function Register() {
   return (
-    <div style={{ maxWidth: 400, margin: "80px auto", padding: "0 16px" }}>
-      <h1>Create Account</h1>
+    <AuthLayout
+      title="Create account"
+      subtitle="Staff access for supply bin inventory and search"
+      footer={
+        <AuthFooterLink
+          text="Have an account?"
+          linkText="Sign in"
+          to="/login"
+        />
+      }
+    >
       <RegisterForm />
-      <p>
-        Have an account? <Link to="/login">Sign In</Link>
-      </p>
-    </div>
+    </AuthLayout>
   )
 }

@@ -5,9 +5,25 @@ import { Button } from "@/components/ui/button";
 
 const SCANNER_ID = "qr-scanner-container";
 
-// Note: In development, React StrictMode causes html5-qrcode to log an AbortError
-// from its internal video.play() call during the double-invoke cycle. This is
-// harmless and does not occur in production builds.
+function binPathFromScan(decodedText: string): string | null {
+  try {
+    const url = new URL(decodedText);
+    if (url.pathname.startsWith("/k/")) {
+      return url.pathname;
+    }
+    if (url.pathname.startsWith("/bins/")) {
+      return `${url.pathname}?scanned=1`;
+    }
+  } catch {
+    if (decodedText.startsWith("/k/")) {
+      return decodedText.split("?")[0] ?? decodedText;
+    }
+    if (decodedText.startsWith("/bins/")) {
+      return `${decodedText}?scanned=1`;
+    }
+  }
+  return null;
+}
 
 export default function Scanner() {
   const navigate = useNavigate();
@@ -22,32 +38,22 @@ export default function Scanner() {
 
     scanner
       .start(
-        { facingMode: "environment" }, // rear camera
+        { facingMode: "environment" },
         { fps: 10, qrbox: { width: 250, height: 250 } },
         (decodedText) => {
-          // Stop scanning once we have a result
           scanner.stop().catch(console.error);
 
-          // Extract path from the scanned URL
-          try {
-            const url = new URL(decodedText);
-            // Navigate to the path component (e.g. /bins/abc-123)
-            navigate(url.pathname);
-          } catch {
-            // If it's already just a path, navigate directly
-            if (decodedText.startsWith("/bins/")) {
-              navigate(decodedText);
-            } else {
-              setError(`Unrecognized QR code: ${decodedText}`);
-            }
+          const path = binPathFromScan(decodedText);
+          if (path) {
+            navigate(path);
+          } else {
+            setError(`Unrecognized QR code: ${decodedText}`);
           }
         },
-        undefined // ignore per-frame errors
+        undefined
       )
       .then(() => {
         if (cancelled) {
-          // Cleanup already ran before start resolved — stop immediately.
-          // Swallow errors: html5-qrcode may throw DOM errors in StrictMode.
           scanner.stop().catch(() => {});
           return;
         }
@@ -55,7 +61,9 @@ export default function Scanner() {
       })
       .catch((err: Error) => {
         if (!cancelled) {
-          setError(`Camera error: ${err.message}. Make sure camera permissions are granted.`);
+          setError(
+            `Camera error: ${err.message}. Make sure camera permissions are granted.`
+          );
           setInitializing(false);
         }
       });
@@ -73,18 +81,26 @@ export default function Scanner() {
   }, [navigate]);
 
   return (
-    <div style={{ maxWidth: 500, margin: "40px auto", padding: "0 16px" }}>
-      <h1>Scan QR Code</h1>
-      <p style={{ color: "#666" }}>Point your camera at a bin QR code label.</p>
+    <div className="mx-auto max-w-lg">
+      <h1 className="text-lg font-semibold">Scan kit QR</h1>
+      <p className="mt-1 text-xs text-muted-foreground">
+        Point the camera at a procedure kit label. You will land on the full
+        supply list so techs can prep the room with confidence.
+      </p>
 
-      {error && <p role="alert" style={{ color: "red" }}>{error}</p>}
+      {error && (
+        <p role="alert" className="mt-4 text-xs text-destructive">
+          {error}
+        </p>
+      )}
 
-      {initializing && !error && <p>Starting camera...</p>}
+      {initializing && !error && (
+        <p className="mt-4 text-xs text-muted-foreground">Starting camera...</p>
+      )}
 
-      {/* html5-qrcode renders into this div */}
-      <div id={SCANNER_ID} style={{ width: "100%" }} />
+      <div id={SCANNER_ID} className="mt-4 w-full" />
 
-      <div style={{ display: "flex", justifyContent: "center", marginTop: 16 }}>
+      <div className="mt-4 flex justify-center">
         <Button variant="outline" onClick={() => navigate("/dashboard")}>
           Cancel
         </Button>

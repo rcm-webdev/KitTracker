@@ -5,6 +5,11 @@ import { Route, Routes } from "react-router";
 import ProtectedRoute from "./ProtectedRoute";
 
 const mockUseSession = vi.fn();
+const mockUseMe = vi.fn();
+
+vi.mock("@/hooks/useMe", () => ({
+  useMe: () => mockUseMe(),
+}));
 
 vi.mock("@/lib/auth-client", () => ({
   signIn: { email: vi.fn() },
@@ -22,9 +27,25 @@ vi.mock("../lib/auth-client", () => ({
   getSession: vi.fn(),
 }));
 
+const leadMe = {
+  data: {
+    role: "lead" as const,
+    permissions: {
+      canCreateKits: true,
+      canEditKits: true,
+      canViewDashboard: true,
+      canSearch: true,
+      scanOnly: false,
+      isKiosk: false,
+    },
+  },
+  isPending: false,
+};
+
 describe("ProtectedRoute", () => {
   it("redirects to /login when there is no session", () => {
     mockUseSession.mockReturnValue({ data: null, isPending: false });
+    mockUseMe.mockReturnValue({ data: undefined, isPending: false });
     renderWithProviders(
       <Routes>
         <Route path="/login" element={<p>Login page</p>} />
@@ -40,9 +61,10 @@ describe("ProtectedRoute", () => {
 
   it("renders children when session exists and user is not admin", () => {
     mockUseSession.mockReturnValue({
-      data: { user: { role: "user" } },
+      data: { user: { role: "technician" } },
       isPending: false,
     });
+    mockUseMe.mockReturnValue(leadMe);
     renderWithProviders(
       <Routes>
         <Route
@@ -57,9 +79,10 @@ describe("ProtectedRoute", () => {
 
   it("redirects non-admin away from admin routes to /dashboard", () => {
     mockUseSession.mockReturnValue({
-      data: { user: { role: "user" } },
+      data: { user: { role: "technician" } },
       isPending: false,
     });
+    mockUseMe.mockReturnValue(leadMe);
     renderWithProviders(
       <Routes>
         <Route path="/dashboard" element={<p>Dashboard</p>} />
@@ -78,6 +101,20 @@ describe("ProtectedRoute", () => {
       data: { user: { role: "admin" } },
       isPending: false,
     });
+    mockUseMe.mockReturnValue({
+      data: {
+        role: "admin" as const,
+        permissions: {
+          canCreateKits: true,
+          canEditKits: true,
+          canViewDashboard: true,
+          canSearch: true,
+          scanOnly: false,
+          isKiosk: false,
+        },
+      },
+      isPending: false,
+    });
     renderWithProviders(
       <Routes>
         <Route path="/admin/users" element={<p>Admin users</p>} />
@@ -91,8 +128,41 @@ describe("ProtectedRoute", () => {
     expect(screen.getByText("Admin users")).toBeInTheDocument();
   });
 
+  it("redirects kiosk users away from dashboard to scan", () => {
+    mockUseSession.mockReturnValue({
+      data: { user: { role: "kiosk" } },
+      isPending: false,
+    });
+    mockUseMe.mockReturnValue({
+      data: {
+        role: "kiosk" as const,
+        permissions: {
+          canCreateKits: false,
+          canEditKits: false,
+          canViewDashboard: false,
+          canSearch: false,
+          scanOnly: true,
+          isKiosk: true,
+        },
+      },
+      isPending: false,
+    });
+    renderWithProviders(
+      <Routes>
+        <Route path="/scan" element={<p>Scan page</p>} />
+        <Route
+          path="/dashboard"
+          element={<ProtectedRoute><p>Protected content</p></ProtectedRoute>}
+        />
+      </Routes>,
+      { initialEntries: ["/dashboard"] }
+    );
+    expect(screen.getByText("Scan page")).toBeInTheDocument();
+  });
+
   it("renders nothing while session status is pending", () => {
     mockUseSession.mockReturnValue({ data: null, isPending: true });
+    mockUseMe.mockReturnValue({ data: undefined, isPending: false });
     const { container } = renderWithProviders(
       <Routes>
         <Route

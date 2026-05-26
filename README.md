@@ -1,6 +1,8 @@
 # Strawhats
 
-A home storage bin inventory app. Create bins, track items inside them, generate printable QR code labels, and scan codes with your camera to jump straight to any bin.
+Centralized ophthalmic procedure supply tracking for clinical operations. Replace tribal knowledge and staff interruptions with QR-labeled supply bins, camera scanning, and full-text search — so teams can find what they need during day-to-day workflow without opening every cart or asking around.
+
+**Production goal:** A procedural supply reference and inventory management system deployed in active clinical use.
 
 ## Features
 
@@ -61,9 +63,57 @@ PORT=3001
 
 ```bash
 cd apps/server
-npx prisma migrate dev
+npx prisma migrate dev    # first-time dev setup (creates + applies migrations)
+# or from repo root after pulling new migrations:
+npm run db:migrate        # applies pending migrations only (e.g. providerTags column)
 npx prisma generate
 ```
+
+If the dashboard shows **500** on `/api/bins`, you almost certainly need `npm run db:migrate` — the schema added `providerTags` on bins in migration `20260525150000_bin_provider_tags`.
+
+4. Seed the **demo clinic account** (8 surgeons, one procedure kit each):
+
+```bash
+npm run db:seed
+# or: cd apps/server && npx prisma db seed
+```
+
+**Demo login**
+
+| Field | Value |
+|-------|--------|
+| Email | `demo@strawhats.clinic` |
+| Password | `demo-demo-demo` |
+
+**Clinic tablet (QR scan PIN)**
+
+| Field | Value |
+|-------|--------|
+| Username (shown on public kit page) | `Clinic Tablet` |
+| PIN | `88888888` (override with `KIOSK_PIN` in `apps/server/.env`) |
+
+Printed QR codes link to `/k/:kitId` — a read-only supply sheet for area tablets. Staff can enter the PIN to open the full app for that kit.
+
+**Team technician (example)**
+
+| Field | Value |
+|-------|--------|
+| Email | `tech.dr-eye@strawhats.clinic` |
+| Password | `demo-demo-demo` |
+| Assigned surgeons | Dr. Eye only — can edit Dr. Eye kits, not create kits or access other teams |
+
+**Roles**
+
+| Role | Create kits | Edit team kits | Dashboard / search | QR scan |
+|------|-------------|----------------|--------------------|---------|
+| `lead` | Yes (assigned surgeons only) | Yes | Yes | Yes |
+| `technician` | No | Yes (assigned surgeons only) | Yes | Yes |
+| `kiosk` | No | No (view via `/k/:id` or signed-in read-only) | No (scan only) | Yes |
+| `admin` | Yes | Yes (all kits) | Admin UI | Yes |
+
+Surgeon assignments are stored on each user as `assignedProviders` (see migration `20260525160000_user_assigned_providers`).
+
+The seed creates kits tagged for **Dr. Eye** through **Dr. Eye8**, each with sample supplies so you can filter by provider and scan QR labels during a walkthrough. Re-running the seed refreshes kits for the same user.
 
 ### Running
 

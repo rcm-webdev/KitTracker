@@ -12,6 +12,33 @@ vi.mock("react-router", async (importOriginal) => {
   return { ...actual, useParams: () => ({ id: "bin-1" }) };
 });
 
+vi.mock("@/hooks/useMe", () => ({
+  useMe: () => ({
+    data: {
+      role: "lead",
+      assignedProviders: [
+        "Dr. Eye",
+        "Dr. Eye2",
+        "Dr. Eye3",
+        "Dr. Eye4",
+        "Dr. Eye5",
+        "Dr. Eye6",
+        "Dr. Eye7",
+        "Dr. Eye8",
+      ],
+      permissions: {
+        canCreateKits: true,
+        canEditKits: true,
+        canViewDashboard: true,
+        canSearch: true,
+        scanOnly: false,
+        isKiosk: false,
+      },
+    },
+    isPending: false,
+  }),
+}));
+
 describe("BinDetail", () => {
   it("shows nothing (null) while bin is loading", () => {
     server.use(
@@ -42,7 +69,7 @@ describe("BinDetail", () => {
     );
     renderWithProviders(<BinDetail />);
     await waitFor(() => {
-      expect(screen.getByText(/items \(0\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/supply list \(0\)/i)).toBeInTheDocument();
     });
   });
 
@@ -76,9 +103,9 @@ describe("BinDetail", () => {
     const user = userEvent.setup();
     renderWithProviders(<BinDetail />);
 
-    await waitFor(() => screen.getByPlaceholderText("Item name"));
-    await user.type(screen.getByPlaceholderText("Item name"), "New Item");
-    await user.click(screen.getByRole("button", { name: /^add$/i }));
+    await waitFor(() => screen.getByLabelText(/item name/i));
+    await user.type(screen.getByLabelText(/item name/i), "New Item");
+    await user.click(screen.getByRole("button", { name: /add item/i }));
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /adding/i })).toBeDisabled();

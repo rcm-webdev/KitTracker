@@ -80,7 +80,7 @@ export default function LoginForm() {
           )}
         />
         {serverError && (
-          <p role="alert" style={{ color: "red" }}>
+          <p role="alert" className="text-xs text-destructive">
             {serverError}
           </p>
         )}

@@ -17,8 +17,9 @@ describe("BinNew", () => {
     const user = userEvent.setup();
     renderWithProviders(<BinNew />);
 
-    await user.type(screen.getByLabelText(/bin name/i), "My Bin");
-    await user.click(screen.getByRole("button", { name: /create bin/i }));
+    await user.type(screen.getByLabelText(/kit name/i), "My Kit");
+    await user.type(screen.getByLabelText(/location/i), "OR 1");
+    await user.click(screen.getByRole("button", { name: /create kit/i }));
 
     await waitFor(() => {
       expect(screen.getByRole("alert")).toBeInTheDocument();
@@ -35,8 +36,9 @@ describe("BinNew", () => {
     const user = userEvent.setup();
     renderWithProviders(<BinNew />);
 
-    await user.type(screen.getByLabelText(/bin name/i), "My Bin");
-    await user.click(screen.getByRole("button", { name: /create bin/i }));
+    await user.type(screen.getByLabelText(/kit name/i), "My Kit");
+    await user.type(screen.getByLabelText(/location/i), "OR 1");
+    await user.click(screen.getByRole("button", { name: /create kit/i }));
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /creating/i })).toBeDisabled();

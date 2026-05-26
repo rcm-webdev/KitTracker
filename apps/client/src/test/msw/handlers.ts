@@ -1,5 +1,13 @@
 import { http, HttpResponse } from "msw";
-import type { Bin, Item, AdminUser, SearchResult } from "@strawhats/shared";
+import {
+  permissionsFor,
+  type Bin,
+  type Item,
+  type AdminUser,
+  type SearchResult,
+  type PublicBin,
+  type AppUser,
+} from "@strawhats/shared";
 
 export const mockBin: Bin = {
   id: "bin-1",
@@ -7,6 +15,7 @@ export const mockBin: Bin = {
   name: "Test Bin",
   location: "Garage",
   description: "A test bin",
+  providerTags: ["Dr. Eye"],
   createdAt: "2026-01-01T00:00:00.000Z",
   updatedAt: "2026-01-01T00:00:00.000Z",
   items: [],
@@ -36,7 +45,8 @@ export const mockSession = {
     id: "user-1",
     email: "test@example.com",
     name: "Test User",
-    role: "user",
+    role: "lead",
+    assignedProviders: ["Dr. Eye"],
     emailVerified: true,
     createdAt: "2026-01-01T00:00:00.000Z",
     updatedAt: "2026-01-01T00:00:00.000Z",
@@ -51,12 +61,52 @@ export const mockSession = {
   },
 };
 
+const mockAppUser: AppUser = {
+  id: "user-1",
+  email: "test@example.com",
+  name: "Test User",
+  role: "lead",
+  assignedProviders: [
+    "Dr. Eye",
+    "Dr. Eye2",
+    "Dr. Eye3",
+    "Dr. Eye4",
+    "Dr. Eye5",
+    "Dr. Eye6",
+    "Dr. Eye7",
+    "Dr. Eye8",
+  ],
+};
+
 export const handlers = [
   http.get("/api/auth/get-session", () => HttpResponse.json(mockSession)),
 
+  http.get("/api/me", () =>
+    HttpResponse.json({
+      ...mockAppUser,
+      permissions: permissionsFor(mockAppUser),
+    })
+  ),
+
+  http.get("/api/bins/providers", () =>
+    HttpResponse.json([
+      "Dr. Eye",
+      "Dr. Eye2",
+      "Dr. Eye3",
+      "Dr. Eye4",
+      "Dr. Eye5",
+      "Dr. Eye6",
+      "Dr. Eye7",
+      "Dr. Eye8",
+    ])
+  ),
   http.get("/api/bins", () => HttpResponse.json([mockBin])),
   http.post("/api/bins", () => HttpResponse.json(mockBin, { status: 201 })),
   http.get("/api/bins/:id", () => HttpResponse.json(mockBin)),
+  http.get("/api/public/bins/:id", () => {
+    const { userId: _userId, ...publicBin } = mockBin;
+    return HttpResponse.json(publicBin satisfies PublicBin);
+  }),
   http.put("/api/bins/:id", () => HttpResponse.json(mockBin)),
   http.delete("/api/bins/:id", () => new HttpResponse(null, { status: 204 })),
 
