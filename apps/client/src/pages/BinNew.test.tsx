@@ -1,11 +1,14 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
+import { toast } from "sonner";
 import { renderWithProviders } from "@/test/renderWithProviders";
 import { server } from "@/test/msw/server";
 import { mockBin } from "@/test/msw/handlers";
 import BinNew from "./BinNew";
+
+vi.mock("sonner", () => ({ toast: { success: vi.fn() } }));
 
 describe("BinNew", () => {
   it("shows error message when create fails", async () => {
@@ -42,6 +45,19 @@ describe("BinNew", () => {
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /creating/i })).toBeDisabled();
+    });
+  });
+
+  it("fires a success toast when kit is created", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<BinNew />);
+
+    await user.type(screen.getByLabelText(/kit name/i), "My Kit");
+    await user.type(screen.getByLabelText(/location/i), "OR 1");
+    await user.click(screen.getByRole("button", { name: /create kit/i }));
+
+    await waitFor(() => {
+      expect(toast.success).toHaveBeenCalledWith("Kit created");
     });
   });
 });

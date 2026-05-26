@@ -2,6 +2,7 @@ import { useNavigate, Link, Navigate } from "react-router"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2 } from "lucide-react"
+import { toast } from "sonner"
 import { useCreateBin, useBinProviders } from "../hooks/useBins"
 import { useMe } from "../hooks/useMe"
 import ProviderTagsField from "@/components/ProviderTagsField"
@@ -41,7 +42,12 @@ export default function BinNew() {
         description: values.description || undefined,
         providerTags: values.providerTags,
       },
-      { onSuccess: (bin) => navigate(`/bins/${bin.id}`) }
+      {
+        onSuccess: (bin) => {
+          toast.success("Kit created")
+          navigate(`/bins/${bin.id}`)
+        },
+      }
     )
   }
 

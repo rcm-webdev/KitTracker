@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link, Navigate } from "react-router"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2 } from "lucide-react"
+import { toast } from "sonner"
 import { useBin, useUpdateBin } from "../hooks/useBin"
 import { useBinProviders } from "../hooks/useBins"
 import { useMe } from "../hooks/useMe"
@@ -56,7 +57,12 @@ export default function BinEdit() {
         description: values.description || null,
         providerTags: values.providerTags,
       },
-      { onSuccess: () => navigate(`/bins/${id}`) }
+      {
+        onSuccess: () => {
+          toast.success("Changes saved")
+          navigate(`/bins/${id}`)
+        },
+      }
     )
   }
 
