@@ -44,8 +44,8 @@ describe("Login", () => {
     const user = userEvent.setup();
     renderWithProviders(<Login />);
 
-    await user.type(screen.getByLabelText(/email/i), "test@example.com");
-    await user.type(screen.getByLabelText(/password/i), "wrongpass");
+    await user.type(screen.getByRole("textbox", { name: "Email" }), "test@example.com");
+    await user.type(screen.getByLabelText("Password", { selector: "input" }), "wrongpass");
     await user.click(screen.getByRole("button", { name: /sign in/i }));
 
     await waitFor(() => {
@@ -59,8 +59,8 @@ describe("Login", () => {
     const user = userEvent.setup();
     renderWithProviders(<Login />);
 
-    await user.type(screen.getByLabelText(/email/i), "test@example.com");
-    await user.type(screen.getByLabelText(/password/i), "password123");
+    await user.type(screen.getByRole("textbox", { name: "Email" }), "test@example.com");
+    await user.type(screen.getByLabelText("Password", { selector: "input" }), "password123");
     await user.click(screen.getByRole("button", { name: /sign in/i }));
 
     await waitFor(() => {
