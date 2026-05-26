@@ -2,8 +2,14 @@ import { useCallback, useRef, useState } from "react"
 import AuthLayout, { AuthFooterLink } from "@/components/AuthLayout"
 import { Button } from "@/components/ui/button"
 import LoginForm from "@/components/LoginForm"
-import { DEMO_USER } from "@kittracker/shared"
+import { DEMO_TECHNICIAN, DEMO_USER } from "@kittracker/shared"
 import { Check, Copy } from "lucide-react"
+
+type DemoCopyField =
+  | "lead-email"
+  | "lead-password"
+  | "tech-email"
+  | "tech-password"
 
 function DemoCredentialPill(props: {
   label: string
@@ -32,11 +38,43 @@ function DemoCredentialPill(props: {
   )
 }
 
+function DemoAccountBlock(props: {
+  title: string
+  email: string
+  password: string
+  emailField: DemoCopyField
+  passwordField: DemoCopyField
+  copiedField: DemoCopyField | null
+  onCopy: (value: string, field: DemoCopyField) => void
+}) {
+  const { title, email, password, emailField, passwordField, copiedField, onCopy } = props
+
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="text-[10px] font-medium text-foreground">{title}</p>
+      <DemoCredentialPill
+        label="Email"
+        value={email}
+        copied={copiedField === emailField}
+        copyLabel={`Copy ${title} email`}
+        onCopy={() => onCopy(email, emailField)}
+      />
+      <DemoCredentialPill
+        label="Password"
+        value={password}
+        copied={copiedField === passwordField}
+        copyLabel={`Copy ${title} password`}
+        onCopy={() => onCopy(password, passwordField)}
+      />
+    </div>
+  )
+}
+
 function DemoLoginCredentials() {
-  const [copiedField, setCopiedField] = useState<"email" | "password" | null>(null)
+  const [copiedField, setCopiedField] = useState<DemoCopyField | null>(null)
   const clearTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const copyValue = useCallback(async (value: string, field: "email" | "password") => {
+  const copyValue = useCallback(async (value: string, field: DemoCopyField) => {
     try {
       await navigator.clipboard.writeText(value)
       if (clearTimer.current) clearTimeout(clearTimer.current)
@@ -52,21 +90,26 @@ function DemoLoginCredentials() {
 
   return (
     <div className="mb-3 rounded-3xl border border-border bg-muted/40 px-3 py-2.5 text-[10px] leading-relaxed text-muted-foreground shadow-sm">
-      <p className="mb-2 text-center font-medium text-foreground">Demo login</p>
-      <div className="flex flex-col gap-2">
-        <DemoCredentialPill
-          label="Email"
-          value={DEMO_USER.email}
-          copied={copiedField === "email"}
-          copyLabel="Copy demo email"
-          onCopy={() => void copyValue(DEMO_USER.email, "email")}
+      <p className="mb-3 text-center font-medium text-foreground">Demo login</p>
+      <div className="flex flex-col gap-4">
+        <DemoAccountBlock
+          title="Clinic lead"
+          email={DEMO_USER.email}
+          password={DEMO_USER.password}
+          emailField="lead-email"
+          passwordField="lead-password"
+          copiedField={copiedField}
+          onCopy={(value, field) => void copyValue(value, field)}
         />
-        <DemoCredentialPill
-          label="Password"
-          value={DEMO_USER.password}
-          copied={copiedField === "password"}
-          copyLabel="Copy demo password"
-          onCopy={() => void copyValue(DEMO_USER.password, "password")}
+        <div className="border-t border-border/60" aria-hidden />
+        <DemoAccountBlock
+          title="Technician"
+          email={DEMO_TECHNICIAN.email}
+          password={DEMO_TECHNICIAN.password}
+          emailField="tech-email"
+          passwordField="tech-password"
+          copiedField={copiedField}
+          onCopy={(value, field) => void copyValue(value, field)}
         />
       </div>
     </div>
