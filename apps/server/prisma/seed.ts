@@ -164,6 +164,10 @@ async function main(): Promise<void> {
     throw new Error("BETTER_AUTH_SECRET is required to run the seed");
   }
 
+  // Allow auth.api.signUpEmail() to work regardless of the REGISTRATION_ENABLED env var.
+  // The seed runs as a standalone process, not as the web server, so this is safe.
+  process.env.REGISTRATION_ENABLED = "true";
+
   const userId = await ensureDemoUser();
   await ensureKioskUser();
   await ensureDemoTechnician();
