@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { toast } from "sonner"
 import { signUp } from "@/lib/auth-client"
 import { registerSchema, type RegisterSchema } from "@/lib/schemas"
 import {
@@ -31,6 +32,7 @@ export default function RegisterForm() {
       setServerError(result.error.message ?? "Registration failed")
       return
     }
+    toast.success("Account created")
     navigate("/dashboard", { replace: true })
   }
 
@@ -81,7 +83,7 @@ export default function RegisterForm() {
           )}
         />
         {serverError && (
-          <p role="alert" style={{ color: "red" }}>
+          <p role="alert" className="text-xs text-destructive">
             {serverError}
           </p>
         )}

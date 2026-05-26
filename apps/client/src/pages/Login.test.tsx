@@ -1,10 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { toast } from "sonner";
 import { renderWithProviders } from "@/test/renderWithProviders";
 import Login from "./Login";
 
 const mockSignIn = vi.fn();
+
+vi.mock("sonner", () => ({ toast: { success: vi.fn() } }));
 
 vi.mock("@/lib/auth-client", () => ({
   signIn: { email: (...args: unknown[]) => mockSignIn(...args) },
@@ -25,6 +28,7 @@ vi.mock("../lib/auth-client", () => ({
 describe("Login", () => {
   beforeEach(() => {
     mockSignIn.mockReset();
+    vi.mocked(toast.success).mockClear();
   });
 
   it("shows required field errors when submitted empty", async () => {
@@ -68,5 +72,19 @@ describe("Login", () => {
     });
 
     resolve!({ data: { user: { role: "user" } }, error: null });
+  });
+
+  it("fires a success toast on successful sign-in", async () => {
+    mockSignIn.mockResolvedValue({ data: { user: { role: "user" } }, error: null });
+    const user = userEvent.setup();
+    renderWithProviders(<Login />);
+
+    await user.type(screen.getByRole("textbox", { name: "Email" }), "test@example.com");
+    await user.type(screen.getByLabelText("Password", { selector: "input" }), "password123");
+    await user.click(screen.getByRole("button", { name: /sign in/i }));
+
+    await waitFor(() => {
+      expect(toast.success).toHaveBeenCalledWith("Signed in");
+    });
   });
 });

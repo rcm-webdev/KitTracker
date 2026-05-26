@@ -1,10 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { toast } from "sonner";
 import { renderWithProviders } from "@/test/renderWithProviders";
 import Register from "./Register";
 
 const mockSignUp = vi.fn();
+
+vi.mock("sonner", () => ({ toast: { success: vi.fn() } }));
 
 vi.mock("@/lib/auth-client", () => ({
   signIn: { email: vi.fn() },
@@ -25,6 +28,7 @@ vi.mock("../lib/auth-client", () => ({
 describe("Register", () => {
   beforeEach(() => {
     mockSignUp.mockReset();
+    vi.mocked(toast.success).mockClear();
   });
 
   it("shows required field errors when submitted empty", async () => {
@@ -71,5 +75,20 @@ describe("Register", () => {
     });
 
     resolve!({ data: { user: {} }, error: null });
+  });
+
+  it("fires a success toast on successful registration", async () => {
+    mockSignUp.mockResolvedValue({ data: { user: {} }, error: null });
+    const user = userEvent.setup();
+    renderWithProviders(<Register />);
+
+    await user.type(screen.getByLabelText(/name/i), "Test User");
+    await user.type(screen.getByLabelText(/email/i), "test@example.com");
+    await user.type(screen.getByLabelText(/password/i), "password123");
+    await user.click(screen.getByRole("button", { name: /register/i }));
+
+    await waitFor(() => {
+      expect(toast.success).toHaveBeenCalledWith("Account created");
+    });
   });
 });

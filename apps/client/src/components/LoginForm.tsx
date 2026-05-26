@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useNavigate, useSearchParams } from "react-router"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { toast } from "sonner"
 import { signIn } from "@/lib/auth-client"
 import { loginSchema, type LoginSchema } from "@/lib/schemas"
 import {
@@ -38,6 +39,7 @@ export default function LoginForm() {
       )
       return
     }
+    toast.success("Signed in")
     const role = result.data?.user?.role
     if (role === "admin") {
       navigate("/admin/users", { replace: true })
