@@ -11,14 +11,15 @@ datasource db {
 // when you run: npx @better-auth/cli@latest generate --output prisma/schema.prisma
 
 model Bin {
-  id          String   @id @default(uuid())
-  userId      String
-  name        String
-  location    String
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  items       Item[]
+  id           String   @id @default(uuid())
+  userId       String
+  name         String
+  location     String
+  description  String?
+  providerTags String[] @default([])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  items        Item[]
 
   @@map("bins")
 }
@@ -42,8 +43,9 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  role          String?
-  banned        Boolean?  @default(false)
+  role               String?
+  assignedProviders  String[]  @default([])
+  banned             Boolean?  @default(false)
   banReason     String?
   banExpires    DateTime?
   sessions      Session[]

@@ -1,6 +1,8 @@
 # Hot Wheels Bin Organizer — MVP Design Spec
 
-## Context
+> **Superseded for product direction:** The active mission is documented in `2026-05-25-product-vision.md` (ophthalmic procedure supply tracking in clinical operations). The technical stack and data model below remain valid; replace consumer/collector framing with clinical supply bins and facility locations.
+
+## Context (original MVP)
 
 A collector has a disorganized Hot Wheels collection stored across multiple physical boxes in different locations (storage unit, garage, house). The problem: no way to know what's in a box or where a box is without opening it. The solution is a private, multi-user web application where users create bins, add items to them, generate QR code labels to print and stick on physical boxes, and scan those QR codes to instantly see bin contents. Search lets users find any item and know exactly which bin and location it's in.
 

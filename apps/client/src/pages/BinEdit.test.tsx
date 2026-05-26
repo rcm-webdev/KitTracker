@@ -16,9 +16,9 @@ describe("BinEdit", () => {
   it("pre-populates name, location, description from fetched bin data", async () => {
     renderWithProviders(<BinEdit />);
     await waitFor(() => {
-      expect(screen.getByLabelText(/name/i)).toHaveValue(mockBin.name);
-      expect(screen.getByLabelText(/location/i)).toHaveValue(mockBin.location);
-      expect(screen.getByLabelText(/description/i)).toHaveValue(mockBin.description ?? "");
+      expect(screen.getByLabelText(/kit name/i)).toHaveValue(mockBin.name);
+      expect(screen.getByLabelText(/room \/ location/i)).toHaveValue(mockBin.location);
+      expect(screen.getByLabelText(/notes/i)).toHaveValue(mockBin.description ?? "");
     });
   });
 
@@ -31,7 +31,7 @@ describe("BinEdit", () => {
     const user = userEvent.setup();
     renderWithProviders(<BinEdit />);
 
-    await waitFor(() => screen.getByLabelText(/name/i));
+    await waitFor(() => screen.getByLabelText(/kit name/i));
     await user.click(screen.getByRole("button", { name: /save changes/i }));
 
     await waitFor(() => {
@@ -49,7 +49,7 @@ describe("BinEdit", () => {
     const user = userEvent.setup();
     renderWithProviders(<BinEdit />);
 
-    await waitFor(() => screen.getByLabelText(/name/i));
+    await waitFor(() => screen.getByLabelText(/kit name/i));
     await user.click(screen.getByRole("button", { name: /save changes/i }));
 
     await waitFor(() => {

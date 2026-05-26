@@ -1,94 +1,107 @@
-import { Routes, Route, Navigate } from "react-router";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
-import BinNew from "./pages/BinNew";
-import BinDetail from "./pages/BinDetail";
-import BinEdit from "./pages/BinEdit";
-import BinLabel from "./pages/BinLabel";
-import Search from "./pages/Search";
-import AdminDashboard from "./pages/AdminDashboard";
-import Scanner from "./pages/Scanner";
+import { Routes, Route, Navigate } from "react-router"
+import ProtectedRoute from "./components/ProtectedRoute"
+import AppLayout from "./components/AppLayout"
+import Login from "./pages/Login"
+import Register from "./pages/Register"
+import Dashboard from "./pages/Dashboard"
+import BinNew from "./pages/BinNew"
+import BinDetail from "./pages/BinDetail"
+import BinEdit from "./pages/BinEdit"
+import BinLabel from "./pages/BinLabel"
+import Search from "./pages/Search"
+import AdminDashboard from "./pages/AdminDashboard"
+import Scanner from "./pages/Scanner"
+import PublicKit from "./pages/PublicKit"
+
+function ProtectedShell({ children }: { children: React.ReactNode }) {
+  return (
+    <ProtectedRoute>
+      <AppLayout>{children}</AppLayout>
+    </ProtectedRoute>
+  )
+}
+
+function ProtectedAdminShell({ children }: { children: React.ReactNode }) {
+  return (
+    <ProtectedRoute requireAdmin>
+      <AppLayout>{children}</AppLayout>
+    </ProtectedRoute>
+  )
+}
 
 export default function App() {
   return (
     <Routes>
-      {/* Public */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/k/:id" element={<PublicKit />} />
 
-      {/* Protected */}
       <Route
         path="/dashboard"
         element={
-          <ProtectedRoute>
+          <ProtectedShell>
             <Dashboard />
-          </ProtectedRoute>
+          </ProtectedShell>
         }
       />
       <Route
         path="/bins/new"
         element={
-          <ProtectedRoute>
+          <ProtectedShell>
             <BinNew />
-          </ProtectedRoute>
+          </ProtectedShell>
         }
       />
       <Route
         path="/bins/:id"
         element={
-          <ProtectedRoute>
+          <ProtectedShell>
             <BinDetail />
-          </ProtectedRoute>
+          </ProtectedShell>
         }
       />
       <Route
         path="/bins/:id/edit"
         element={
-          <ProtectedRoute>
+          <ProtectedShell>
             <BinEdit />
-          </ProtectedRoute>
+          </ProtectedShell>
         }
       />
       <Route
         path="/bins/:id/label"
         element={
-          <ProtectedRoute>
+          <ProtectedShell>
             <BinLabel />
-          </ProtectedRoute>
+          </ProtectedShell>
         }
       />
       <Route
         path="/search"
         element={
-          <ProtectedRoute>
+          <ProtectedShell>
             <Search />
-          </ProtectedRoute>
+          </ProtectedShell>
         }
       />
-
-      {/* Admin only */}
-      <Route
-        path="/admin/users"
-        element={
-          <ProtectedRoute requireAdmin>
-            <AdminDashboard />
-          </ProtectedRoute>
-        }
-      />
-
       <Route
         path="/scan"
         element={
-          <ProtectedRoute>
+          <ProtectedShell>
             <Scanner />
-          </ProtectedRoute>
+          </ProtectedShell>
+        }
+      />
+      <Route
+        path="/admin/users"
+        element={
+          <ProtectedAdminShell>
+            <AdminDashboard />
+          </ProtectedAdminShell>
         }
       />
 
-      {/* Default */}
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
     </Routes>
-  );
+  )
 }

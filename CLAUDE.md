@@ -22,6 +22,7 @@ npm run build --workspace=@strawhats/client  # tsc + vite build → dist/
 npx prisma migrate dev      # Create and apply migration
 npx prisma generate         # Regenerate Prisma client after schema changes
 npx @better-auth/cli generate  # Regenerate Better Auth schema tables
+npm run db:seed             # Demo user + 8 surgeon-tagged kits (packages/shared/demo.ts)
 ```
 
 Environment: copy `.env.example` to `.env` in `apps/server` and fill in values before running.
@@ -62,7 +63,7 @@ For post-feature walkthroughs, use the `pair-programming-mentor` agent — it ha
 
 ## Architecture
 
-This is an npm workspaces monorepo. Deployable apps live under `apps/`; shared libraries live under `packages/`.
+This is an npm workspaces monorepo for **ophthalmic procedure supply inventory** in clinical operations (QR-labeled bins, camera scan, full-text search). Product vision: `docs/superpowers/specs/2026-05-25-product-vision.md`. Deployable apps live under `apps/`; shared libraries live under `packages/`.
 
 ### Package Roles
 

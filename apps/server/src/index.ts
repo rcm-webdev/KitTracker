@@ -4,9 +4,11 @@ import cors from "cors";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
 import binsRouter from "./routes/bins";
+import publicBinsRouter from "./routes/publicBins";
 import itemsRouter from "./routes/items";
 import searchRouter from "./routes/search";
 import adminRouter from "./routes/admin";
+import meRouter from "./routes/me";
 
 const app = express();
 const PORT = process.env.PORT ?? 3001;
@@ -26,6 +28,8 @@ app.get("/api/health", (_req, res) => {
   res.json({ status: "ok" });
 });
 
+app.use("/api/me", meRouter);
+app.use("/api/public/bins", publicBinsRouter);
 app.use("/api/bins", binsRouter);
 app.use("/api/bins", itemsRouter);   // POST /api/bins/:id/items
 app.use("/api/items", itemsRouter);  // PUT/DELETE /api/items/:id

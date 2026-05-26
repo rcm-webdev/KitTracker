@@ -1,6 +1,7 @@
 # UI/UX Improvements Design
 
-**Date:** 2026-05-14
+**Date:** 2026-05-14 (updated 2026-05-25)  
+**Product vision:** See `2026-05-25-product-vision.md` — ophthalmic procedure supply inventory for clinical operations.  
 **Scope:** Navigation shell, dashboard layout, form consistency
 
 ## Overview

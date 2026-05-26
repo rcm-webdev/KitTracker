@@ -1,6 +1,7 @@
 import QRCode from "./QRCode";
 import { MapPin } from "lucide-react";
 import type { Bin } from "@strawhats/shared";
+import { publicKitPath } from "@strawhats/shared";
 
 interface PrintLabelProps {
   bin: Bin;
@@ -8,7 +9,7 @@ interface PrintLabelProps {
 }
 
 export default function PrintLabel({ bin, appUrl }: PrintLabelProps) {
-  const binUrl = `${appUrl}/bins/${bin.id}`;
+  const binUrl = `${appUrl}${publicKitPath(bin.id)}`;
   const itemCount = bin.items?.length ?? 0;
 
   return (

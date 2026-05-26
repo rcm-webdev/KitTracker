@@ -14,7 +14,12 @@ export function useBin(id: string) {
 export function useUpdateBin(id: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: { name: string; location: string; description: string | null }) =>
+    mutationFn: (data: {
+      name: string;
+      location: string;
+      description: string | null;
+      providerTags: string[];
+    }) =>
       apiFetchJson<Bin>(`/api/bins/${id}`, {
         method: "PUT",
         body: JSON.stringify(data),
@@ -22,6 +27,7 @@ export function useUpdateBin(id: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.bins.detail(id) });
       queryClient.invalidateQueries({ queryKey: queryKeys.bins.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.bins.providers });
     },
   });
 }

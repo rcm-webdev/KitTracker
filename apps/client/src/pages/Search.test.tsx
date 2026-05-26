@@ -11,7 +11,7 @@ describe("Search", () => {
   it("shows no results message when query returns empty array", async () => {
     renderWithProviders(<Search />, { initialEntries: ["/search?q=notfound"] });
     await waitFor(() => {
-      expect(screen.getByText(/no items found/i)).toBeInTheDocument();
+      expect(screen.getByText(/no supplies found/i)).toBeInTheDocument();
     });
   });
 
@@ -58,11 +58,11 @@ describe("Search", () => {
     const user = userEvent.setup();
     renderWithProviders(<Search />, { initialEntries: ["/search"] });
 
-    await user.type(screen.getByPlaceholderText(/search by item name/i), "wrench");
+    await user.type(screen.getByPlaceholderText(/search by supply name/i), "wrench");
     await user.click(screen.getByRole("button", { name: /search/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/no items found/i)).toBeInTheDocument();
+      expect(screen.getByText(/no supplies found/i)).toBeInTheDocument();
     });
   });
 });

@@ -10,6 +10,7 @@ const bin: Bin = {
   name: "Garage Tools",
   location: "Garage",
   description: null,
+  providerTags: [],
   createdAt: "2026-01-01T00:00:00.000Z",
   updatedAt: "2026-01-01T00:00:00.000Z",
   items: [
@@ -22,23 +23,22 @@ describe("BinCard", () => {
   it("renders bin name and location", () => {
     renderWithProviders(<BinCard bin={bin} />);
     expect(screen.getByText("Garage Tools")).toBeInTheDocument();
-    // Location appears in a <p> alongside the MapPin icon
-    expect(screen.getByText(/Garage/, { selector: "p" })).toBeInTheDocument();
+    expect(screen.getByText("Garage")).toBeInTheDocument();
   });
 
   it("renders item count", () => {
     renderWithProviders(<BinCard bin={bin} />);
-    expect(screen.getByText(/2 item/)).toBeInTheDocument();
+    expect(screen.getByText("2 supplies")).toBeInTheDocument();
   });
 
   it("renders 0 items when items array is empty", () => {
     renderWithProviders(<BinCard bin={{ ...bin, items: [] }} />);
-    expect(screen.getByText(/0 item/)).toBeInTheDocument();
+    expect(screen.getByText("0 supplies")).toBeInTheDocument();
   });
 
   it("edit link points to /bins/:id/edit", () => {
     renderWithProviders(<BinCard bin={bin} />);
-    expect(screen.getByRole("link", { name: /edit/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /edit garage tools/i })).toHaveAttribute(
       "href",
       "/bins/bin-1/edit"
     );
