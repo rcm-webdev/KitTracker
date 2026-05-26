@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import PrintLabel from "./PrintLabel";
-import type { Bin } from "@strawhats/shared";
+import type { Bin } from "@kittracker/shared";
 
 const bin: Bin = {
   id: "bin-1",

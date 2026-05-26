@@ -2,14 +2,14 @@ import { CLINIC_PROVIDERS } from "./providers";
 
 /** Demo lead tech — can create kits for all demo surgeons. */
 export const DEMO_USER = {
-  email: "demo@strawhats.clinic",
+  email: "demo@kittracker.clinic",
   password: "demo-demo-demo",
   name: "Clinic Demo (Lead)",
 } as const;
 
 /** Example technician on a single surgeon team (seed optional). */
 export const DEMO_TECHNICIAN = {
-  email: "tech.dr-eye@strawhats.clinic",
+  email: "tech.dr-eye@kittracker.clinic",
   password: "demo-demo-demo",
   name: "Dr. Eye Team Tech",
   assignedProviders: ["Dr. Eye"] as const,

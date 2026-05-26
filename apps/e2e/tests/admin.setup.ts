@@ -6,11 +6,11 @@ import { Client } from "pg";
 const adminAuthFile = path.join(__dirname, "../playwright/.auth/admin.json");
 
 setup("authenticate admin", async ({ request }) => {
-  // Load test env vars so DATABASE_URL points at strawhats_test, not the real DB.
+  // Load test env vars so DATABASE_URL points at kittracker_test, not the real DB.
   const testConfig = dotenv.config({ path: path.join(__dirname, "../../server/.env.test") });
-  const dbUrl = testConfig.parsed?.DATABASE_URL ?? "postgresql://aokiji@localhost:5432/strawhats_test";
+  const dbUrl = testConfig.parsed?.DATABASE_URL ?? "postgresql://aokiji@localhost:5432/kittracker_test";
 
-  const email = process.env.E2E_ADMIN_EMAIL ?? "admin@strawhats.test";
+  const email = process.env.E2E_ADMIN_EMAIL ?? "admin@kittracker.test";
   const password = process.env.E2E_ADMIN_PASSWORD ?? "admin-password-123";
 
   await request.post("http://localhost:3001/api/auth/sign-up/email", {
@@ -19,7 +19,7 @@ setup("authenticate admin", async ({ request }) => {
 
   // Sign up the bannable user before signing in as admin — Better Auth may
   // reject sign-up from an already-authenticated session context.
-  const bannableEmail = process.env.E2E_BANNABLE_EMAIL ?? "bannable@strawhats.test";
+  const bannableEmail = process.env.E2E_BANNABLE_EMAIL ?? "bannable@kittracker.test";
   const bannablePassword = process.env.E2E_BANNABLE_PASSWORD ?? "bannable-password-123";
   await request.post("http://localhost:3001/api/auth/sign-up/email", {
     data: { email: bannableEmail, password: bannablePassword, name: "Bannable User" },

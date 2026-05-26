@@ -8,7 +8,7 @@ import procedureSetupPlaceholder from "@/assets/procedure-setup-placeholder.png"
 import { publicKitUrl } from "@/lib/kitUrls"
 import { useBin } from "../hooks/useBin"
 import { useMe } from "../hooks/useMe"
-import { canMutateBin } from "@strawhats/shared"
+import { canMutateBin } from "@kittracker/shared"
 import { useAddItem, useDeleteItem } from "../hooks/useItems"
 import { itemSchema, type ItemSchema } from "@/lib/schemas"
 import {

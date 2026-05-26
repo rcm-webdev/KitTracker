@@ -2,7 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiFetchJson } from "../lib/api";
 import { queryKeys } from "../lib/queryKeys";
-import type { SearchResult } from "@strawhats/shared";
+import type { SearchResult } from "@kittracker/shared";
 
 export function useSearch(query: string) {
   return useQuery({

@@ -9,7 +9,7 @@ const authFile = path.join(__dirname, "../playwright/.auth/user.json");
 setup("authenticate", async ({ request }) => {
   await request.post("http://localhost:3001/api/auth/sign-up/email", {
     data: {
-      email: process.env.E2E_USER_EMAIL ?? "e2e@strawhats.test",
+      email: process.env.E2E_USER_EMAIL ?? "e2e@kittracker.test",
       password: process.env.E2E_USER_PASSWORD ?? "e2e-password-123",
       name: "E2E User",
     },
@@ -20,7 +20,7 @@ setup("authenticate", async ({ request }) => {
     "http://localhost:3001/api/auth/sign-in/email",
     {
       data: {
-        email: process.env.E2E_USER_EMAIL ?? "e2e@strawhats.test",
+        email: process.env.E2E_USER_EMAIL ?? "e2e@kittracker.test",
         password: process.env.E2E_USER_PASSWORD ?? "e2e-password-123",
       },
     }

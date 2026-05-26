@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { screen } from "@testing-library/react";
 import { renderWithProviders } from "@/test/renderWithProviders";
 import BinCard from "./BinCard";
-import type { Bin } from "@strawhats/shared";
+import type { Bin } from "@kittracker/shared";
 
 const bin: Bin = {
   id: "bin-1",

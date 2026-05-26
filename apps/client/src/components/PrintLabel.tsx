@@ -1,7 +1,7 @@
 import QRCode from "./QRCode";
 import { MapPin } from "lucide-react";
-import type { Bin } from "@strawhats/shared";
-import { publicKitPath } from "@strawhats/shared";
+import type { Bin } from "@kittracker/shared";
+import { publicKitPath } from "@kittracker/shared";
 
 interface PrintLabelProps {
   bin: Bin;

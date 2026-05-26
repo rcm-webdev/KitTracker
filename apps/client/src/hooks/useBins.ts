@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiFetchJson } from "../lib/api";
 import { queryKeys } from "../lib/queryKeys";
-import type { Bin } from "@strawhats/shared";
+import type { Bin } from "@kittracker/shared";
 
 export type BinListFilters = {
   location?: string;

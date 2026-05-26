@@ -1,5 +1,5 @@
 import { MapPin } from "lucide-react"
-import type { PublicBin } from "@strawhats/shared"
+import type { PublicBin } from "@kittracker/shared"
 import procedureSetupPlaceholder from "@/assets/procedure-setup-placeholder.png"
 import { Badge } from "@/components/ui/badge"
 

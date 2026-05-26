@@ -12,11 +12,11 @@ npm run dev:client          # Vite client only
 
 # Testing
 npm run test:e2e            # Playwright E2E tests (auto-starts both servers)
-npm run test:ui --workspace=@strawhats/e2e   # Interactive Playwright UI
+npm run test:ui --workspace=@kittracker/e2e   # Interactive Playwright UI
 
 # Build
-npm run build --workspace=@strawhats/server  # tsc → dist/
-npm run build --workspace=@strawhats/client  # tsc + vite build → dist/
+npm run build --workspace=@kittracker/server  # tsc → dist/
+npm run build --workspace=@kittracker/client  # tsc + vite build → dist/
 
 # Database (run from apps/server/ or with --prefix)
 npx prisma migrate dev      # Create and apply migration
@@ -26,6 +26,8 @@ npm run db:seed             # Demo user + 8 surgeon-tagged kits (packages/shared
 ```
 
 Environment: copy `.env.example` to `.env` in `apps/server` and fill in values before running.
+
+Docker: `docker compose up --build` from the repo root (see `README.md`). Demo seed: `docker compose --profile seed run --rm seed`.
 
 ## Testing
 
@@ -37,14 +39,14 @@ Two testing layers:
 
 ```bash
 # Component tests
-npm run test --workspace=@strawhats/client
+npm run test --workspace=@kittracker/client
 
 # E2E tests (auto-starts both servers)
 npm run test:e2e
 
 # Interactive UIs
-npm run test:ui --workspace=@strawhats/client
-npm run test:ui --workspace=@strawhats/e2e
+npm run test:ui --workspace=@kittracker/client
+npm run test:ui --workspace=@kittracker/e2e
 ```
 
 For running and interpreting tests, use the `test-runner` agent — it knows both layers, commands, and how to diagnose failures.
@@ -67,7 +69,7 @@ This is an npm workspaces monorepo for **ophthalmic procedure supply inventory**
 
 ### Package Roles
 
-- **`packages/shared/`** — Pure TypeScript types (`types.ts`). No runtime code. Both client and server import from it via the `@strawhats/shared` path alias.
+- **`packages/shared/`** — Pure TypeScript types (`types.ts`). No runtime code. Both client and server import from it via the `@kittracker/shared` path alias.
 - **`apps/server/`** — Express API on port 3001. Uses Better Auth for auth, Prisma 7 for database access (PostgreSQL).
 - **`apps/client/`** — React 19 + Vite + React Router v7 SPA on port 5173. In dev, `/api` requests are proxied to the server via Vite's proxy config.
 - **`apps/e2e/`** — Playwright tests that start both servers automatically (health-checks `http://localhost:3001/api/health` before running).

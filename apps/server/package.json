@@ -1,5 +1,5 @@
 {
-  "name": "@strawhats/server",
+  "name": "@kittracker/server",
   "version": "1.0.0",
   "scripts": {
     "dev": "tsx watch src/index.ts",
@@ -12,7 +12,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@strawhats/shared": "*",
+    "@kittracker/shared": "*",
     "better-auth": "latest",
     "cors": "^2.8.5",
     "express": "^4.18.2",

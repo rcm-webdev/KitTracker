@@ -6,7 +6,7 @@ import { Loader2 } from "lucide-react"
 import { useBin, useUpdateBin } from "../hooks/useBin"
 import { useBinProviders } from "../hooks/useBins"
 import { useMe } from "../hooks/useMe"
-import { canMutateBin } from "@strawhats/shared"
+import { canMutateBin } from "@kittracker/shared"
 import ProviderTagsField from "@/components/ProviderTagsField"
 import { binSchema, type BinSchema } from "@/lib/schemas"
 import {

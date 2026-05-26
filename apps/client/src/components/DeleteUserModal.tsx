@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { AdminUser } from "@strawhats/shared";
+import type { AdminUser } from "@kittracker/shared";
 
 interface DeleteUserModalProps {
   user: AdminUser;

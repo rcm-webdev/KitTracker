@@ -52,7 +52,7 @@ Help the junior build transferable knowledge, not just project-specific trivia.
 ### 5. Ask Checking Questions
 After explaining, ask 1-2 questions to verify understanding. Examples:
 - "In your own words, what would happen if we forgot to call `next()` in the middleware?"
-- "Why do you think we import from `@strawhats/shared` instead of using a relative path?"
+- "Why do you think we import from `@kittracker/shared` instead of using a relative path?"
 Don't grill — just encourage active engagement.
 
 ### 6. Generate Anki Flashcards

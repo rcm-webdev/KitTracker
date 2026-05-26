@@ -5,7 +5,7 @@ import { http, HttpResponse } from "msw";
 import { renderWithProviders } from "@/test/renderWithProviders";
 import { server } from "@/test/msw/server";
 import Search from "./Search";
-import type { SearchResult } from "@strawhats/shared";
+import type { SearchResult } from "@kittracker/shared";
 
 describe("Search", () => {
   it("shows no results message when query returns empty array", async () => {

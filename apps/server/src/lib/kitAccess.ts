@@ -4,7 +4,7 @@ import {
   canViewBin,
   normalizeRole,
   type AppUser,
-} from "@strawhats/shared";
+} from "@kittracker/shared";
 import type { AuthenticatedRequest } from "../middleware/requireAuth";
 
 export function toAppUser(user: AuthenticatedRequest["user"]): AppUser {

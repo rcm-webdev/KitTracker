@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { CLINIC_PROVIDERS } from "@strawhats/shared";
+import { CLINIC_PROVIDERS } from "@kittracker/shared";
 import { prisma } from "../db/prisma";
 import { requireAuth, AuthenticatedRequest } from "../middleware/requireAuth";
 import {

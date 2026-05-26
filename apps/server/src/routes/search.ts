@@ -2,7 +2,7 @@ import { Router } from "express";
 import { prisma } from "../db/prisma";
 import { requireAuth, AuthenticatedRequest } from "../middleware/requireAuth";
 import { toAppUser } from "../lib/kitAccess";
-import type { SearchResult } from "@strawhats/shared";
+import type { SearchResult } from "@kittracker/shared";
 
 const router = Router();
 

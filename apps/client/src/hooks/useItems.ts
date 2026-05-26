@@ -2,7 +2,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiFetch, apiFetchJson } from "../lib/api";
 import { queryKeys } from "../lib/queryKeys";
-import type { Item } from "@strawhats/shared";
+import type { Item } from "@kittracker/shared";
 
 export function useAddItem(binId: string) {
   const queryClient = useQueryClient();

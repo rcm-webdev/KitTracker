@@ -1,6 +1,6 @@
 import AuthLayout, { AuthFooterLink } from "@/components/AuthLayout"
 import LoginForm from "@/components/LoginForm"
-import { DEMO_USER } from "@strawhats/shared"
+import { DEMO_USER } from "@kittracker/shared"
 
 export default function Login() {
   return (

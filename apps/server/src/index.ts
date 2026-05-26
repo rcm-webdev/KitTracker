@@ -1,4 +1,6 @@
 import "dotenv/config";
+import path from "path";
+import { existsSync } from "fs";
 import express from "express";
 import cors from "cors";
 import { toNodeHandler } from "better-auth/node";
@@ -35,6 +37,15 @@ app.use("/api/bins", itemsRouter);   // POST /api/bins/:id/items
 app.use("/api/items", itemsRouter);  // PUT/DELETE /api/items/:id
 app.use("/api/search", searchRouter);
 app.use("/api/admin", adminRouter);
+
+// Serve the built React SPA — only active when public/ exists (inside the Docker image)
+const clientDist = path.join(process.cwd(), "public");
+if (existsSync(clientDist)) {
+  app.use(express.static(clientDist));
+  app.get("*", (_req, res) => {
+    res.sendFile(path.join(clientDist, "index.html"));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}. You better catch it!`);

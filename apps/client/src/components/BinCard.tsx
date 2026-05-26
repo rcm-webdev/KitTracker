@@ -1,6 +1,6 @@
 import { Link } from "react-router"
 import { MapPin, Pencil } from "lucide-react"
-import type { Bin } from "@strawhats/shared"
+import type { Bin } from "@kittracker/shared"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {

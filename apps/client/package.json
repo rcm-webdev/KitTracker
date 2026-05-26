@@ -1,5 +1,5 @@
 {
-  "name": "@strawhats/client",
+  "name": "@kittracker/client",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -14,7 +14,7 @@
   "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@hookform/resolvers": "^5.2.2",
-    "@strawhats/shared": "*",
+    "@kittracker/shared": "*",
     "@tanstack/react-query": "^5.99.2",
     "@tanstack/react-query-devtools": "^5.99.2",
     "axios": "^1.15.1",

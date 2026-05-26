@@ -2,7 +2,7 @@ import { Router } from "express";
 import { prisma } from "../db/prisma";
 import { requireAdmin } from "../middleware/requireAdmin";
 import { type AuthenticatedRequest } from "../middleware/requireAuth";
-import type { AdminUser } from "@strawhats/shared";
+import type { AdminUser } from "@kittracker/shared";
 
 const router = Router();
 

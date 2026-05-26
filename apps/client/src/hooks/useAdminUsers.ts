@@ -2,7 +2,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiFetchJson } from "../lib/api";
 import { queryKeys } from "../lib/queryKeys";
-import type { AdminUser } from "@strawhats/shared";
+import type { AdminUser } from "@kittracker/shared";
 
 export function useAdminUsers() {
   return useQuery({

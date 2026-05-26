@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import type { AppUser, UserPermissions } from "@strawhats/shared";
+import type { AppUser, UserPermissions } from "@kittracker/shared";
 import { apiFetchJson } from "../lib/api";
 import { useSession } from "../lib/auth-client";
 

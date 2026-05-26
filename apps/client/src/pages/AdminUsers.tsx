@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { authClient } from "../lib/auth-client";
-import type { User } from "@strawhats/shared";
+import type { User } from "@kittracker/shared";
 import {
   Table,
   TableBody,

@@ -5,7 +5,7 @@ import {
   DEMO_TECHNICIAN,
   DEMO_USER,
   KIOSK_USER,
-} from "@strawhats/shared";
+} from "@kittracker/shared";
 import { auth } from "../src/lib/auth";
 import { prisma } from "../src/db/prisma";
 

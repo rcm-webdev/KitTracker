@@ -115,6 +115,40 @@ Surgeon assignments are stored on each user as `assignedProviders` (see migratio
 
 The seed creates kits tagged for **Dr. Eye** through **Dr. Eye8**, each with sample supplies so you can filter by provider and scan QR labels during a walkthrough. Re-running the seed refreshes kits for the same user.
 
+### Docker
+
+Run the full stack (PostgreSQL, API, and nginx-served SPA on one origin):
+
+```bash
+# Optional: copy and set BETTER_AUTH_SECRET / APP_URL
+cp .env.docker.example .env.docker
+
+docker compose up --build
+```
+
+Open **http://localhost:8080** (override with `APP_PORT` in `.env.docker`).
+
+The `web` container serves the React build and proxies `/api/*` to the Express server so cookies and Better Auth stay same-origin.
+
+Load demo data after the stack is healthy:
+
+```bash
+docker compose --profile seed run --rm seed
+```
+
+Use the demo credentials from the table above (`demo@strawhats.clinic` / `demo-demo-demo`).
+
+**Compose services**
+
+| Service | Role |
+|---------|------|
+| `db` | PostgreSQL 16 |
+| `server` | Express API; runs `prisma migrate deploy` on startup |
+| `web` | nginx + static client |
+| `seed` | One-off demo seed (`--profile seed`) |
+
+Set `APP_URL` to the URL you use in the browser (default `http://localhost:8080`) so Better Auth trusted origins match.
+
 ### Running
 
 Start both apps in one terminal:
@@ -134,14 +168,14 @@ npm run dev:client   # React app only
 
 ```bash
 # Component tests (Vitest)
-npm run test --workspace=@strawhats/client
+npm run test --workspace=@kittracker/client
 
 # E2E tests (Playwright — auto-starts both servers)
 npm run test:e2e
 
 # Interactive UIs
-npm run test:ui --workspace=@strawhats/client
-npm run test:ui --workspace=@strawhats/e2e
+npm run test:ui --workspace=@kittracker/client
+npm run test:ui --workspace=@kittracker/e2e
 ```
 
 ## Project Structure

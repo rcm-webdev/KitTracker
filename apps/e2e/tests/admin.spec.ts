@@ -41,7 +41,7 @@ test.describe("Admin API", () => {
       const usersResponse = await adminApiContext.get("/api/admin/users");
       const users = await usersResponse.json();
       // Use the bannable user so we don't affect the e2e user's session
-      const bannableEmail = process.env.E2E_BANNABLE_EMAIL ?? "bannable@strawhats.test";
+      const bannableEmail = process.env.E2E_BANNABLE_EMAIL ?? "bannable@kittracker.test";
       const regularUser = users.find((u: { email: string }) => u.email === bannableEmail);
       expect(regularUser).toBeDefined();
 
@@ -54,7 +54,7 @@ test.describe("Admin API", () => {
       const users = await usersResponse.json();
       // Use the dedicated bannable user — banning deletes sessions, which would
       // invalidate apiContext for other tests if we used the e2e user.
-      const bannableEmail = process.env.E2E_BANNABLE_EMAIL ?? "bannable@strawhats.test";
+      const bannableEmail = process.env.E2E_BANNABLE_EMAIL ?? "bannable@kittracker.test";
       const regularUser = users.find((u: { email: string }) => u.email === bannableEmail);
       expect(regularUser).toBeDefined();
 
@@ -86,7 +86,7 @@ test.describe("Admin API", () => {
     test("admin cannot ban themselves", async ({ adminApiContext }) => {
       const meResponse = await adminApiContext.get("/api/admin/users");
       const users = await meResponse.json();
-      const adminUser = users.find((u: { email: string }) => u.email === "admin@strawhats.test");
+      const adminUser = users.find((u: { email: string }) => u.email === "admin@kittracker.test");
       expect(adminUser).toBeDefined();
 
       const response = await adminApiContext.post(`/api/admin/users/${adminUser.id}/ban`);
@@ -98,7 +98,7 @@ test.describe("Admin API", () => {
     test("returns 403 for regular user", async ({ apiContext, adminApiContext }) => {
       const usersResponse = await adminApiContext.get("/api/admin/users");
       const users = await usersResponse.json();
-      const bannableEmail = process.env.E2E_BANNABLE_EMAIL ?? "bannable@strawhats.test";
+      const bannableEmail = process.env.E2E_BANNABLE_EMAIL ?? "bannable@kittracker.test";
       const regularUser = users.find((u: { email: string }) => u.email === bannableEmail);
 
       const response = await apiContext.delete(`/api/admin/users/${regularUser.id}`);
@@ -108,7 +108,7 @@ test.describe("Admin API", () => {
     test("admin cannot delete themselves", async ({ adminApiContext }) => {
       const usersResponse = await adminApiContext.get("/api/admin/users");
       const users = await usersResponse.json();
-      const adminUser = users.find((u: { email: string }) => u.email === "admin@strawhats.test");
+      const adminUser = users.find((u: { email: string }) => u.email === "admin@kittracker.test");
 
       const response = await adminApiContext.delete(`/api/admin/users/${adminUser.id}`);
       expect(response.status()).toBe(400);
@@ -120,7 +120,7 @@ test.describe("Admin API", () => {
       // Use the dedicated bannable user to avoid invalidating the e2e user's session
       const usersResponse = await adminApiContext.get("/api/admin/users");
       const users = await usersResponse.json();
-      const bannableEmail = process.env.E2E_BANNABLE_EMAIL ?? "bannable@strawhats.test";
+      const bannableEmail = process.env.E2E_BANNABLE_EMAIL ?? "bannable@kittracker.test";
       const regularUser = users.find((u: { email: string }) => u.email === bannableEmail);
       expect(regularUser).toBeDefined();
 

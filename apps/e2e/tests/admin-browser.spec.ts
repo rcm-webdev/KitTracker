@@ -26,7 +26,7 @@ test.describe("Admin Dashboard browser", () => {
   test("admin's own row has disabled action buttons", async ({ page }) => {
     await page.goto("/admin/users");
     // Find the row that contains the admin email
-    const adminRow = page.locator("tr", { hasText: "admin@strawhats.test" });
+    const adminRow = page.locator("tr", { hasText: "admin@kittracker.test" });
     await expect(adminRow.locator("button", { hasText: "Deactivate" })).toBeDisabled();
     await expect(adminRow.locator("button", { hasText: "Delete" })).toBeDisabled();
   });

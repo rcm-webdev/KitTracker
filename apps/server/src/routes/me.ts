@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { permissionsFor } from "@strawhats/shared";
+import { permissionsFor } from "@kittracker/shared";
 import { requireAuth, AuthenticatedRequest } from "../middleware/requireAuth";
 import { toAppUser } from "../lib/kitAccess";
 

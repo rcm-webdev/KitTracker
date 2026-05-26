@@ -69,7 +69,7 @@ Add `"@/*": ["./src/*"]` to the existing `paths` object:
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@strawhats/shared": ["../shared/types.ts"],
+      "@kittracker/shared": ["../shared/types.ts"],
       "@/*": ["./src/*"]
     }
   },

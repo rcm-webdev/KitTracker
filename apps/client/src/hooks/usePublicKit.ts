@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import type { PublicBin } from "@strawhats/shared";
+import type { PublicBin } from "@kittracker/shared";
 import { apiFetchJson } from "../lib/api";
 
 export function usePublicKit(id: string) {

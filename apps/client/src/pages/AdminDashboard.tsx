@@ -7,7 +7,7 @@ import {
   useBanUser,
   useDeleteUser,
 } from "../hooks/useAdminUsers";
-import type { AdminUser } from "@strawhats/shared";
+import type { AdminUser } from "@kittracker/shared";
 
 export default function AdminDashboard() {
   const { data: session } = useSession();

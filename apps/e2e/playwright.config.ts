@@ -46,14 +46,14 @@ export default defineConfig({
     {
       // Start a fresh server using only .env.test vars — never touches server/.env.
       // If port 3001 is in use, stop your dev server before running tests.
-      command: "npm run dev --workspace=@strawhats/server",
+      command: "npm run dev --workspace=@kittracker/server",
       cwd: "../../",
       url: "http://localhost:3001/api/health",
       reuseExistingServer: false,
       env: testEnv,
     },
     {
-      command: "npm run dev --workspace=@strawhats/client",
+      command: "npm run dev --workspace=@kittracker/client",
       cwd: "../../",
       url: "http://localhost:5173",
       reuseExistingServer: !process.env.CI,

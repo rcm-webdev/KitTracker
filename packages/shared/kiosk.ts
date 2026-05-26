@@ -1,6 +1,6 @@
 /** Shared clinic tablet login for QR scan follow-up (staff mode). */
 export const KIOSK_USER = {
-  email: "tablet@strawhats.clinic",
+  email: "tablet@kittracker.clinic",
   /** Default PIN (8+ chars for Better Auth); override via KIOSK_PIN when seeding. */
   password: "88888888",
   displayName: "Clinic Tablet",

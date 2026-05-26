@@ -5,7 +5,7 @@ import {
   canViewBin,
   permissionsFor,
   type AppUser,
-} from "@strawhats/shared";
+} from "@kittracker/shared";
 
 const leadDrEye: AppUser = {
   id: "1",

@@ -1,4 +1,4 @@
-import { CLINIC_PROVIDERS } from "@strawhats/shared"
+import { CLINIC_PROVIDERS } from "@kittracker/shared"
 import { X } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"

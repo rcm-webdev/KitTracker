@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { auth } from "../lib/auth";
 import { prisma } from "../db/prisma";
-import { normalizeRole, type UserRole } from "@strawhats/shared";
+import { normalizeRole, type UserRole } from "@kittracker/shared";
 
 export interface AuthenticatedRequest extends Request {
   user: {

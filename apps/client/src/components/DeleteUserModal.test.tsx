@@ -3,7 +3,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { render } from "@testing-library/react";
 import DeleteUserModal from "./DeleteUserModal";
-import type { AdminUser } from "@strawhats/shared";
+import type { AdminUser } from "@kittracker/shared";
 
 const user: AdminUser = {
   id: "user-2",

@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { KIOSK_USER } from "@strawhats/shared"
+import { KIOSK_USER } from "@kittracker/shared"
 import { signIn } from "@/lib/auth-client"
 import { kioskPinSchema, type KioskPinSchema } from "@/lib/schemas"
 import {

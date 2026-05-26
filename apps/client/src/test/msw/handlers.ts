@@ -7,7 +7,7 @@ import {
   type SearchResult,
   type PublicBin,
   type AppUser,
-} from "@strawhats/shared";
+} from "@kittracker/shared";
 
 export const mockBin: Bin = {
   id: "bin-1",
