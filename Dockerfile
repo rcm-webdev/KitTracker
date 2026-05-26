@@ -39,6 +39,17 @@ RUN npx prisma generate && \
       --external:prisma \
       --external:pg \
       --external:better-auth \
+      --external:better-auth/* && \
+    npx esbuild prisma/seed.ts \
+      --bundle \
+      --platform=node \
+      --target=node20 \
+      --outfile=dist/prisma/seed.js \
+      --external:@prisma/* \
+      --external:@prisma/client \
+      --external:prisma \
+      --external:pg \
+      --external:better-auth \
       --external:better-auth/*
 
 # Production — Express serves the API and the built React SPA on one port
@@ -56,8 +67,10 @@ COPY --from=build-server /app/node_modules/.prisma node_modules/.prisma
 COPY --from=build-server /app/node_modules/@prisma node_modules/@prisma
 # Client build lands inside the server directory so Express can serve it as static files
 COPY --from=build-client /app/apps/client/dist apps/server/public
+COPY scripts/docker-entrypoint.sh /entrypoint.sh
 
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup && \
+    chmod +x /entrypoint.sh
 USER appuser
 
 HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=5 \
@@ -66,4 +79,4 @@ HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=5 \
 WORKDIR /app/apps/server
 EXPOSE 3000
 
-ENTRYPOINT ["sh", "-c", "prisma migrate deploy && exec node dist/index.js"]
+ENTRYPOINT ["/entrypoint.sh"]
