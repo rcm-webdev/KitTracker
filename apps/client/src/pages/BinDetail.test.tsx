@@ -2,10 +2,13 @@ import { describe, it, expect, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
+import { toast } from "sonner";
 import { renderWithProviders } from "@/test/renderWithProviders";
 import { server } from "@/test/msw/server";
 import { mockBin, mockItem } from "@/test/msw/handlers";
 import BinDetail from "./BinDetail";
+
+vi.mock("sonner", () => ({ toast: { success: vi.fn() } }));
 
 vi.mock("react-router", async (importOriginal) => {
   const actual = await importOriginal<typeof import("react-router")>();
@@ -109,6 +112,41 @@ describe("BinDetail", () => {
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /adding/i })).toBeDisabled();
+    });
+  });
+
+  it("fires a success toast when an item is added", async () => {
+    server.use(
+      http.get("/api/bins/:id", () => HttpResponse.json({ ...mockBin, items: [] })),
+      http.post("/api/bins/:id/items", () => HttpResponse.json(mockItem, { status: 201 }))
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<BinDetail />);
+
+    await waitFor(() => screen.getByLabelText(/item name/i));
+    await user.type(screen.getByLabelText(/item name/i), "New Item");
+    await user.click(screen.getByRole("button", { name: /add item/i }));
+
+    await waitFor(() => {
+      expect(toast.success).toHaveBeenCalledWith("Item added");
+    });
+  });
+
+  it("fires a success toast when an item is removed", async () => {
+    server.use(
+      http.get("/api/bins/:id", () =>
+        HttpResponse.json({ ...mockBin, items: [mockItem] })
+      ),
+      http.delete("/api/items/:id", () => new HttpResponse(null, { status: 204 }))
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<BinDetail />);
+
+    await waitFor(() => screen.getByText("Test Item"));
+    await user.click(screen.getByRole("button", { name: /remove test item/i }));
+
+    await waitFor(() => {
+      expect(toast.success).toHaveBeenCalledWith("Item removed");
     });
   });
 });

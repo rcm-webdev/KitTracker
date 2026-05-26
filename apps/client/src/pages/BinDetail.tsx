@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { Loader2, MapPin, X } from "lucide-react"
 import { useParams, Link, useSearchParams } from "react-router"
+import { toast } from "sonner"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import QRCode from "../components/QRCode"
@@ -57,7 +58,10 @@ export default function BinDetail() {
         description: values.description || undefined,
       },
       {
-        onSuccess: () => form.reset({ name: "", description: "" }),
+        onSuccess: () => {
+          toast.success("Item added")
+          form.reset({ name: "", description: "" })
+        },
       }
     )
   }
@@ -157,7 +161,11 @@ export default function BinDetail() {
                   variant="ghost"
                   size="icon-xs"
                   aria-label={`Remove ${item.name}`}
-                  onClick={() => deleteItem.mutate(item.id)}
+                  onClick={() =>
+                    deleteItem.mutate(item.id, {
+                      onSuccess: () => toast.success("Item removed"),
+                    })
+                  }
                 >
                   <X className="size-3.5" />
                 </Button>
