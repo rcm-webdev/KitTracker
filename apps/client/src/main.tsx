@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Toaster } from "sonner";
 import "./index.css";
 import App from "./App";
+import AppToaster from "./components/AppToaster";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,7 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <App />
       </BrowserRouter>
-      <Toaster richColors />
+      <AppToaster />
       <ReactQueryDevtools />
     </QueryClientProvider>
   </React.StrictMode>
