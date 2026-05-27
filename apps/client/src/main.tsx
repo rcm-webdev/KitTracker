@@ -19,7 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <App />
       </BrowserRouter>
-      <Toaster />
+      <Toaster richColors />
       <ReactQueryDevtools />
     </QueryClientProvider>
   </React.StrictMode>
